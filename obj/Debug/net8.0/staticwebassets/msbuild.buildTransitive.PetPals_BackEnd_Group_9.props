@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\PetPals_BackEnd_Group_9.props" />
+</Project>

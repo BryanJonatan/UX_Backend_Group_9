@@ -1,0 +1,6 @@
+@PetPals_BackEnd_Group_9_HostAddress = http://localhost:5099
+
+GET {{PetPals_BackEnd_Group_9_HostAddress}}/api/v1/
+Accept: application/json
+
+###

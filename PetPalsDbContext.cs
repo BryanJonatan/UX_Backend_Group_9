@@ -46,6 +46,7 @@ namespace PetPals_BackEnd_Group_9
             modelBuilder.Entity<Pet>(entity =>
             {
                 entity.HasKey(e => e.PetId);
+                entity.Property(e => e.Price).HasPrecision(10, 2);
                 entity.HasOne(e => e.Owner)
                       .WithMany()
                       .HasForeignKey(e => e.OwnerId)
@@ -78,6 +79,7 @@ namespace PetPals_BackEnd_Group_9
             modelBuilder.Entity<Service>(entity =>
             {
                 entity.HasKey(e => e.ServiceId);
+                entity.Property(e => e.Price).HasPrecision(10, 2);
                 entity.HasOne(e => e.Provider)
                       .WithMany()
                       .HasForeignKey(e => e.ProviderId)

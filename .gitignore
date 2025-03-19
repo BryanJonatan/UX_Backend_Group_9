@@ -1,0 +1,101 @@
+# .NET build artifacts
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# NuGet Packages
+*.nupkg
+[Nn]u[Pp]ackages/
+packages/
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# Coverage
+*.coverage
+*.coveragexml
+
+# Local development
+.vs/
+.vscode/
+.ionide/
+*.swp
+*.swo
+
+# User-specific files
+*.userprefs
+
+# Publish Web Output
+*.pubxml
+publishproj
+*.Publish.xml
+*.azurepubxml
+
+# Dependency directories
+node_modules/
+
+# Build log files
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# ReSharper
+_ReSharper*/
+*.aps
+*.cache
+*.dotCover
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Azure Functions
+func.exe
+
+# Local development secrets
+appsettings.Development.json
+secrets.json
+
+# Bower/Npm
+bower_components/
+npm-debug.log
+
+# Temp files
+*.tmp
+*.temp
+
+# Environment files
+.env
+*.env.local
+*.env.*.local
+
+# Local databases
+*.mdf
+*.ldf
+*.sdf

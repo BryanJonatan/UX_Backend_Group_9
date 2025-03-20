@@ -16,11 +16,15 @@ namespace PetPals_BackEnd_Group_9.Handlers
         public async Task<List<AdoptionListDto>> Handle(SearchAdoptionListQuery request, CancellationToken cancellationToken)
         {
             var query = _context.Pets
+                .Include(p => p.Species)
                 .Where(p => p.Status == "available");
 
-            if (!string.IsNullOrEmpty(request.Name))
+            if (!string.IsNullOrEmpty(request.Name) || !string.IsNullOrEmpty(request.Breed))
             {
-                query = query.Where(p => p.Name.ToLower().Contains(request.Name.ToLower()));
+                query = query.Where(p => 
+                    (!string.IsNullOrEmpty(request.Name) && p.Name.ToLower().Contains(request.Name.ToLower())) ||
+                    (!string.IsNullOrEmpty(request.Breed) && p.Breed.ToLower().Contains(request.Breed.ToLower()))
+                );
             }
 
             if (request.MinAge.HasValue)
@@ -33,14 +37,9 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 query = query.Where(p => p.Age <= request.MaxAge.Value);
             }
 
-            if (!string.IsNullOrEmpty(request.Breed))
+            if (!string.IsNullOrEmpty(request.Species))
             {
-                query = query.Where(p => p.Breed.ToLower().Contains(request.Breed.ToLower()));
-            }
-
-            if (request.SpeciesId.HasValue)
-            {
-                query = query.Where(p => p.SpeciesId == request.SpeciesId.Value);
+                query = query.Where(p => p.Species.Name.ToLower().Contains(request.Species.ToLower()));
             }
 
             if (request.MinPrice.HasValue)

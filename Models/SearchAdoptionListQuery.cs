@@ -8,7 +8,7 @@ namespace PetPals_BackEnd_Group_9.Models
         public int? MinAge { get; set; }
         public int? MaxAge { get; set; }
         public string? Breed { get; set; }
-        public int? SpeciesId { get; set; }
+        public string? Species { get; set; }
         public decimal? MinPrice { get; set; }
         public decimal? MaxPrice { get; set; }
     }

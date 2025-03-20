@@ -21,7 +21,15 @@ namespace PetPals_BackEnd_Group_9
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-           
+            //modelBuilder.ApplyConfiguration(new ServiceCategoryConfiguration());
+            modelBuilder.Entity<Pet>()
+         .Property(p => p.Price)
+         .HasColumnType("DECIMAL(10,2)"); // Ensure EF Core matches DB type
+
+            modelBuilder.Entity<Service>()
+                .Property(s => s.Price)
+                .HasColumnType("DECIMAL(10,2)"); // Same for Service entity
+
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.UserId);
@@ -88,27 +96,80 @@ namespace PetPals_BackEnd_Group_9
                       .OnDelete(DeleteBehavior.NoAction);
             });
 
-            modelBuilder.Entity<ServiceCategory>(entity =>
-            {
-                entity.HasKey(e => e.CategoryId);
-                entity.HasIndex(e => e.Name).IsUnique();
-            });
+            //modelBuilder.Entity<ServiceCategory>().ToTable("service_categories");
+            //modelBuilder.Entity<ServiceCategory>().ToTable("service_categories");
 
-            modelBuilder.Entity<Service>(entity =>
-            {
-                entity.HasKey(e => e.ServiceId);
-                entity.Property(e => e.Price).HasPrecision(10, 2);
-                entity.HasOne(e => e.Provider)
-                      .WithMany()
-                      .HasForeignKey(e => e.ProviderId)
-                      .OnDelete(DeleteBehavior.Cascade);
-                entity.HasOne(e => e.Category)
-                      .WithMany()
-                      .HasForeignKey(e => e.CategoryId)
-                      .OnDelete(DeleteBehavior.Restrict); // Prevent deletion of categories if services exist
-            });
+            //modelBuilder.Entity<ServiceCategory>()
+            //    .Property(p => p.CategoryId)
+            //    .HasColumnName("category_id");
+
+            //modelBuilder.Entity<ServiceCategory>().Property(p => p.Name).HasColumnName("name");
+
+            //modelBuilder.Entity<ServiceCategory>(entity =>
+            //{
+            //    entity.HasKey(e => e.CategoryId);
+            //    entity.HasIndex(e => e.Name).IsUnique();
+            //});
+
+            //modelBuilder.Entity<Service>().ToTable("services");
+            //modelBuilder.Entity<Service>(entity =>
+            //{
+            //    entity.HasKey(e => e.ServiceId);
+            //    entity.Property(e => e.Price).HasPrecision(10, 2);
+            //    entity.HasOne(e => e.Provider)
+            //          .WithMany()
+            //          .HasForeignKey(e => e.ProviderId)
+            //          .OnDelete(DeleteBehavior.Cascade);
+            //    entity.HasOne(e => e.Category)
+            //          .WithMany()
+            //          .HasForeignKey(e => e.CategoryId)
+            //          .OnDelete(DeleteBehavior.Restrict); // Prevent deletion of categories if services exist
+            //});
+
+       
+
+           
+
+            modelBuilder.Entity<Service>()
+        .ToTable("services")  // Ensure EF maps to correct table
+        .Property(s => s.ServiceId)
+        .HasColumnName("service_id");  // Explicit column mapping
+
+            modelBuilder.Entity<Service>()
+                .Property(s => s.ProviderId)
+                .HasColumnName("provider_id");
+
+            modelBuilder.Entity<Service>()
+                .Property(s => s.CategoryId)
+                .HasColumnName("category_id");
+
+            modelBuilder.Entity<Service>()
+                .Property(s => s.City)
+                .HasColumnName("city");
+
+            modelBuilder.Entity<Service>()
+                .Property(s => s.Address)
+                .HasColumnName("address");
 
 
+
+
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.UserId)
+                .HasColumnName("user_id");
+
+         
+
+
+            modelBuilder.Entity<ServiceCategory>()
+       .ToTable("service_categories")  
+       .Property(s => s.CategoryId)
+       .HasColumnName("category_id");  
+
+            modelBuilder.Entity<ServiceCategory>()
+                .Property(s => s.Name)
+                .HasColumnName("name");
             modelBuilder.Entity<ForumPost>(entity =>
             {
                 entity.HasKey(e => e.ForumPostId);

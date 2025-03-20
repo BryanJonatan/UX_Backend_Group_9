@@ -131,9 +131,9 @@ namespace PetPals_BackEnd_Group_9
            
 
             modelBuilder.Entity<Service>()
-        .ToTable("services")  // Ensure EF maps to correct table
+        .ToTable("services")  
         .Property(s => s.ServiceId)
-        .HasColumnName("service_id");  // Explicit column mapping
+        .HasColumnName("service_id");  
 
             modelBuilder.Entity<Service>()
                 .Property(s => s.ProviderId)

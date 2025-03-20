@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 public class Service
 {
     [Key]
-    [Column("service_id")] // Map to database column
+    [Column("service_id")] 
     public int ServiceId { get; set; }
 
     [Column("provider_id")]
@@ -30,7 +30,7 @@ public class Service
     [Column("city")]
     public string? City { get; set; }
 
-    // Navigation properties
+   
     public virtual User Provider { get; set; }
     public virtual ServiceCategory Category { get; set; }
 }

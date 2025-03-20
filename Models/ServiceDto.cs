@@ -4,7 +4,7 @@ namespace PetPals_BackEnd_Group_9.Models
 {
     public class ServiceDto : IRequest<List<Service>>
     {
-        public int ServiceId { get; set; }  // Added ServiceId
+        public int ServiceId { get; set; }  
         public string ProviderName { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string CategoryName { get; set; } = string.Empty;

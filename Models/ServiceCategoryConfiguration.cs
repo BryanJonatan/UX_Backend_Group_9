@@ -7,13 +7,13 @@ namespace PetPals_BackEnd_Group_9.Models
     {
         public void Configure(EntityTypeBuilder<ServiceCategory> builder)
         {
-            builder.ToTable("service_categories"); // Match DB table name
+            builder.ToTable("service_categories");
 
             builder.Property(s => s.CategoryId)
-                .HasColumnName("category_id"); // Match DB column name
+                .HasColumnName("category_id"); 
 
             builder.Property(s => s.Name)
-                .HasColumnName("name"); // Match DB column name
+                .HasColumnName("name"); 
         }
     }
 }

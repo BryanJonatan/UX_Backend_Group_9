@@ -18,7 +18,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
             var query = _context.Services
                 .Include(s => s.Provider)
                 .Include(s => s.Category)
-                .AsQueryable(); // Ensure proper query evaluation
+                .AsQueryable();
 
             if (!string.IsNullOrEmpty(request.Name))
             {

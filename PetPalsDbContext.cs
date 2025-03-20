@@ -104,8 +104,10 @@ namespace PetPals_BackEnd_Group_9
                       .OnDelete(DeleteBehavior.Cascade);
                 entity.HasOne(e => e.Category)
                       .WithMany()
-                      .HasForeignKey(e => e.CategoryId);
+                      .HasForeignKey(e => e.CategoryId)
+                      .OnDelete(DeleteBehavior.Restrict); // Prevent deletion of categories if services exist
             });
+
 
             modelBuilder.Entity<ForumPost>(entity =>
             {

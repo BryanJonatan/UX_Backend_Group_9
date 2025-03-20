@@ -1,7 +1,10 @@
-﻿namespace PetPals_BackEnd_Group_9.Models
+﻿using MediatR;
+
+namespace PetPals_BackEnd_Group_9.Models
 {
-    public class ServiceDto
+    public class ServiceDto : IRequest<List<Service>>
     {
+        public int ServiceId { get; set; }  // Added ServiceId
         public string ProviderName { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string CategoryName { get; set; } = string.Empty;

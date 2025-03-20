@@ -1,54 +1,64 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PetPals_BackEnd_Group_9.Models;
-using Serilog;
 
 namespace PetPals_BackEnd_Group_9.Handlers
 {
     public class GetServiceListQueryHandler : IRequestHandler<GetServiceListQuery, List<ServiceDto>>
     {
-        private readonly PetPalsDbContext _dbContext;
+        private readonly PetPalsDbContext _context;
 
-        public GetServiceListQueryHandler(PetPalsDbContext dbContext)
+        public GetServiceListQueryHandler(PetPalsDbContext context)
         {
-            _dbContext = dbContext;
+            _context = context;
         }
 
         public async Task<List<ServiceDto>> Handle(GetServiceListQuery request, CancellationToken cancellationToken)
         {
-            try
+            var query = _context.Services
+                .Include(s => s.Provider)
+                .Include(s => s.Category)
+                .AsQueryable(); // Ensure proper query evaluation
+
+            if (!string.IsNullOrEmpty(request.Name))
             {
-                Log.Information("Fetching services list with filters: {@Request}", request);
-
-                var query = _dbContext.Services
-                    .Include(s => s.Provider)
-                    .Include(s => s.Category)
-                    .Where(s => string.IsNullOrEmpty(request.Name) || s.Name.Contains(request.Name))
-                    .Select(s => new ServiceDto
-                    {
-                        ProviderName = s.Provider != null ? s.Provider.Name : "Unknown",
-                        Name = s.Name,
-                        CategoryName = s.Category != null ? s.Category.Name : "Unknown",
-                        Description = s.Description ?? "No description",
-                        Price = s.Price,
-                        Address = s.Address ?? "No address",
-                        City = s.City ?? "No city"
-                    });
-
-                Log.Information("Executing query: {Query}", query.ToQueryString()); // Debug SQL query
-
-                var result = await query.ToListAsync(cancellationToken);
-                Log.Information("Fetched {Count} services", result.Count);
-
-                return result;
+                query = query.Where(s => s.Name.ToLower().Contains(request.Name.ToLower()));
             }
-            catch (Exception ex)
+
+            if (!string.IsNullOrEmpty(request.CategoryName))
             {
-                Log.Error(ex, "Error in GetServiceListHandler");
-                throw;
+                query = query.Where(s => s.Category != null && s.Category.Name.ToLower().Contains(request.CategoryName.ToLower()));
             }
+
+            if (request.MinPrice.HasValue)
+            {
+                query = query.Where(s => s.Price >= request.MinPrice.Value);
+            }
+
+            if (request.MaxPrice.HasValue)
+            {
+                query = query.Where(s => s.Price <= request.MaxPrice.Value);
+            }
+
+            if (!string.IsNullOrEmpty(request.City))
+            {
+                query = query.Where(s => s.City != null && s.City.ToLower().Contains(request.City.ToLower()));
+            }
+
+            return await query
+    .Select(s => new ServiceDto
+    {
+        ServiceId = s.ServiceId,
+        Name = s.Name,
+        CategoryName = s.Category != null ? s.Category.Name : "Unknown",  // Prevent null reference
+        ProviderName = s.Provider != null ? s.Provider.Name : "Unknown",  // Prevent null reference
+        Description = s.Description ?? "No description",
+        Price = s.Price,
+        Address = s.Address ?? "No address",
+        City = s.City ?? "No city"
+    })
+    .ToListAsync(cancellationToken);
+
         }
-
-
     }
 }

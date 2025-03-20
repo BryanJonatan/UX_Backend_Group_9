@@ -25,7 +25,7 @@ namespace PetPals_BackEnd_Group_9.Models
 
         [Required]
         public int RoleId { get; set; }
-        public Role Role { get; set; } = null!;
+        public Role Role { get; set; }
 
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
         public string CreatedBy { get; set; } = "SYSTEM";

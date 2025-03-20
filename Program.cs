@@ -10,6 +10,7 @@ using System.Text.Json;
 using PetPals_BackEnd_Group_9.Handlers;
 using System.Reflection;
 using PetPals_BackEnd_Group_9.Models;
+using PetPals_BackEnd_Group_9.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -39,6 +40,9 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+builder.Services.AddScoped<GetServiceListQueryValidator>();
+builder.Services.AddScoped<SearchAdoptionListValidator>();
+
 
 var app = builder.Build();
 

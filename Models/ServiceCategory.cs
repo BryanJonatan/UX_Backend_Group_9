@@ -6,6 +6,6 @@ namespace PetPals_BackEnd_Group_9.Models
     {
         [Key]
         public int CategoryId { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
     }
 }

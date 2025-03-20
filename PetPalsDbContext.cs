@@ -37,25 +37,43 @@ namespace PetPals_BackEnd_Group_9
                 entity.HasIndex(e => e.Name).IsUnique();
             });
 
-            modelBuilder.Entity<Species>(entity =>
-            {
-                entity.HasKey(e => e.SpeciesId);
-                entity.HasIndex(e => e.Name).IsUnique();
-            });
+            //modelBuilder.Entity<Species>(entity =>
+            //{
+            //    entity.HasKey(e => e.SpeciesId);
+            //    entity.HasIndex(e => e.Name).IsUnique();
+            //});
 
-            modelBuilder.Entity<Pet>(entity =>
-            {
-                entity.HasKey(e => e.PetId);
-                entity.Property(e => e.Price).HasPrecision(10, 2);
-                entity.HasOne(e => e.Owner)
-                      .WithMany()
-                      .HasForeignKey(e => e.OwnerId)
-                      .OnDelete(DeleteBehavior.Cascade);
-                entity.HasOne(e => e.Species)
-                      .WithMany()
-                      .HasForeignKey(e => e.SpeciesId)
-                      .OnDelete(DeleteBehavior.Cascade);
-            });
+            modelBuilder.Entity<Species>()
+           .ToTable("species")
+           .Property(s => s.SpeciesId)
+           .HasColumnName("species_id");
+
+            //modelBuilder.Entity<Pet>(entity =>
+            //{
+            //    entity.HasKey(e => e.PetId);
+            //    entity.Property(e => e.Price).HasPrecision(10, 2);
+            //    entity.HasOne(e => e.Owner)
+            //          .WithMany()
+            //          .HasForeignKey(e => e.OwnerId)
+            //          .OnDelete(DeleteBehavior.Cascade);
+            //    entity.HasOne(e => e.Species)
+            //          .WithMany()
+            //          .HasForeignKey(e => e.SpeciesId)
+            //          .OnDelete(DeleteBehavior.Cascade);
+            //});
+
+            modelBuilder.Entity<Pet>()
+            .ToTable("pets")
+            .Property(p => p.PetId)
+            .HasColumnName("pet_id");
+
+            modelBuilder.Entity<Pet>()
+                .Property(p => p.SpeciesId)
+                .HasColumnName("species_id");
+
+            modelBuilder.Entity<Pet>()
+                .Property(p => p.OwnerId)
+                .HasColumnName("owner_id");
 
             modelBuilder.Entity<Adoption>(entity =>
             {

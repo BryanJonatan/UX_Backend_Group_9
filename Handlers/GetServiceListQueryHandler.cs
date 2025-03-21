@@ -20,9 +20,12 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 .Include(s => s.Category)
                 .AsQueryable();
 
-            if (!string.IsNullOrEmpty(request.Name))
+            if (!string.IsNullOrEmpty(request.Name) || !string.IsNullOrEmpty(request.City))
             {
-                query = query.Where(s => s.Name.ToLower().Contains(request.Name.ToLower()));
+                query = query.Where(p =>
+                    (!string.IsNullOrEmpty(request.Name) && p.Name.ToLower().Contains(request.Name.ToLower())) ||
+                    (!string.IsNullOrEmpty(request.City) && p.City.ToLower().Contains(request.City.ToLower()))
+                );
             }
 
             if (!string.IsNullOrEmpty(request.CategoryName))
@@ -40,16 +43,12 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 query = query.Where(s => s.Price <= request.MaxPrice.Value);
             }
 
-            if (!string.IsNullOrEmpty(request.City))
-            {
-                query = query.Where(s => s.City != null && s.City.ToLower().Contains(request.City.ToLower()));
-            }
-
             return await query
     .Select(s => new ServiceDto
     {
         ServiceId = s.ServiceId,
         Name = s.Name,
+        Slug = s.Slug,
         CategoryName = s.Category != null ? s.Category.Name : "Unknown",  // Prevent null reference
         ProviderName = s.Provider != null ? s.Provider.Name : "Unknown",  // Prevent null reference
         Description = s.Description ?? "No description",

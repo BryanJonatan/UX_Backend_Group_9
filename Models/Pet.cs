@@ -24,6 +24,9 @@ namespace PetPals_BackEnd_Group_9.Models
         [Required]
         public required Species Species { get; set; }
 
+        [Column("description")]
+        public required string Description { get; set; }
+
         [Column("price")]
         public decimal Price { get; set; }
 
@@ -35,6 +38,22 @@ namespace PetPals_BackEnd_Group_9.Models
 
         [Required]
         public required User Owner { get; set; }
+
+        [Required, Column("slug")]
+        public required string Slug { get; set; }
+
+        [Column("created_at")]
+        public DateTime CreatedAt { get; set; }
+
+        [Column("created_by")]
+        public string CreatedBy { get; set; }
+
+        [Column("updated_at")]
+        public DateTime? UpdatedAt { get; set; }
+
+        [Column("updated_by")]
+        public string UpdatedBy { get; set; }
+
     }
 
 

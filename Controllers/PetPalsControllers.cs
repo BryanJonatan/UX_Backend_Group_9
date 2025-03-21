@@ -83,5 +83,49 @@ namespace PetPals_BackEnd_Group_9.Controllers
                 });
             }
         }
+
+        [HttpGet("adoption-list/{slug}")]
+        public async Task<IActionResult> GetSinglePet(string slug)
+        {
+            var query = new GetSinglePetQuery(slug);
+            var validator = new GetSinglePetValidator();
+            var validationResult = validator.Validate(query);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(new ProblemDetails
+                {
+                    Title = "Validation Error",
+                    Status = 400,
+                    Detail = string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage))
+                });
+            }
+
+            var pet = await _mediator.Send(query);
+            return Ok(pet);
+        }
+
+        [HttpGet("service-list/{slug}")]
+        public async Task<IActionResult> GetSingleService(string slug)
+        {
+            var query = new GetSingleServiceQuery(slug);
+            var validator = new GetSingleServiceValidator();
+            var validationResult = validator.Validate(query);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(new ProblemDetails
+                {
+                    Title = "Validation Error",
+                    Status = 400,
+                    Detail = string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage))
+                });
+            }
+
+            var service = await _mediator.Send(query);
+            return Ok(service);
+        }
     }
+
 }
+

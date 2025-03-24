@@ -14,6 +14,9 @@ namespace PetPals_BackEnd_Group_9.Models
 
         [MaxLength(255)]
         public string? Description { get; set; }
+
+        [Column("created_at")]
+        public DateTimeOffset CreatedAt { get; set; }
     }
 }
 

@@ -1,9 +1,12 @@
 ﻿
+using System.Net;
+
 namespace PetPals_BackEnd_Group_9.Handlers
 {
     [Serializable]
     internal class NotFoundException : Exception
     {
+
         public NotFoundException()
         {
         }

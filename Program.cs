@@ -11,6 +11,7 @@ using PetPals_BackEnd_Group_9.Handlers;
 using System.Reflection;
 using PetPals_BackEnd_Group_9.Models;
 using PetPals_BackEnd_Group_9.Validators;
+using PetPals_BackEnd_Group_9.Command;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -42,6 +43,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 builder.Services.AddScoped<GetServiceListQueryValidator>();
 builder.Services.AddScoped<SearchAdoptionListValidator>();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(RegisterCommand).Assembly));
+builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
 
 var app = builder.Build();

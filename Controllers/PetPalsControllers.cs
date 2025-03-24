@@ -232,7 +232,7 @@ namespace PetPals_BackEnd_Group_9.Controllers
             }
         }
 
-        [HttpGet("get-specieses")]
+        [HttpGet("get-species")]
         public async Task<IActionResult> GetAllSpecies([FromQuery] int? speciesId, [FromQuery] string? name)
         {
             try

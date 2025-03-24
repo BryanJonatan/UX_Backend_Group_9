@@ -21,6 +21,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
         public async Task<LoginResponseDto> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = await _dbContext.Users
+                .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
@@ -33,7 +34,16 @@ namespace PetPals_BackEnd_Group_9.Handlers
 
             _logger.LogInformation("User {Email} berhasil login.", request.Email);
 
-            return new LoginResponseDto { Token = token, Message = "Login berhasil" };
+            return new LoginResponseDto { Token = token, Message = "Login berhasil", 
+                User = new GetSingleUserResponse { 
+                    Name = user.Name,
+                    Email = user.Email,
+                    Password = user.Password,
+                    Phone = user.Phone,
+                    Address = user.Address,
+                    Role = user.Role.Name,
+                } 
+            };
         }
     }
 

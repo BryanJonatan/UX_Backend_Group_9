@@ -6,8 +6,6 @@ namespace PetPals_BackEnd_Group_9.Models
     public class AdoptionListDto : IRequest<List<Pet>>
     {
         public int PetId { get; set; }
-
-
         public required string Name { get; set; } 
         public required string Slug { get; set; }
         public required string Breed { get; set; }

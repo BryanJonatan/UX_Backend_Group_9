@@ -24,7 +24,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
     {
         ProviderName = s.Provider.Name,
         Name  = s.Name,
-         Category = s.Category.Name,
+         CategoryName = s.Category.Name,
          Description = s.Description,
          Price = s.Price,
          Address = s.Address,

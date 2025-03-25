@@ -71,7 +71,6 @@ namespace PetPals_BackEnd_Group_9.Handlers
                     Name = newUser.Name,
                     Email = newUser.Email,
                     Role = role.Name
-
                 };
             }
             catch (Exception ex)

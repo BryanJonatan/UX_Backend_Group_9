@@ -316,8 +316,7 @@ namespace PetPals_BackEnd_Group_9.Controllers
 
             try
             {
-                
-                var command = new AdoptionTransactionCommand(request.PetId, request.Name, request.Breed, request.UserId, request.BookingDate);
+                var command = new AdoptionTransactionCommand(request.PetId, request.UserId);
                 var result = await _mediator.Send(command);
 
                 if (result.Success)

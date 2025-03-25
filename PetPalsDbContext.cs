@@ -110,10 +110,6 @@ namespace PetPals_BackEnd_Group_9
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Adoption>()
-         .Property(a => a.AdoptionDate)
-         .HasColumnType("DATETIMEOFFSET");
-
-            modelBuilder.Entity<Adoption>()
                 .Property(a => a.CreatedAt)
                 .HasColumnType("DATETIMEOFFSET");
 

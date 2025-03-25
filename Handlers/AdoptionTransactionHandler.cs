@@ -35,21 +35,18 @@ namespace PetPals_BackEnd_Group_9.Handlers
             {
                 AdopterId = command.UserId,
                 PetId = command.PetId,
-                AdoptionDate = DateTimeOffset.UtcNow,
-                Status = "Completed",
+                Status = "pending", // pending, accepted, rejected
                 CreatedAt = DateTimeOffset.UtcNow,
                 CreatedBy = command.UserId.ToString(),
                 Price = pet.Price,
-                BookingDate = command.BookingDate,
-                 UpdatedAt = DateTimeOffset.UtcNow,  
+                BookingDate = DateTimeOffset.UtcNow, // nanti baru update aja
+                UpdatedAt = DateTimeOffset.UtcNow,  
                 UpdatedBy = command.UserId.ToString(),
-
             };
 
-            pet.Status = "Adopted";
+            pet.Status = "reserved"; // available, reserved, adopted
             pet.UpdatedAt = DateTimeOffset.UtcNow;  
-            pet.UpdatedBy = command.UserId.ToString();
-
+            pet.UpdatedBy = "SYSTEM";
          
             _context.Adoptions.Add(adoption);
             await _context.SaveChangesAsync(cancellationToken);

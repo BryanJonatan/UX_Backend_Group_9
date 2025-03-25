@@ -11,8 +11,6 @@ namespace PetPals_BackEnd_Group_9.Models
         public int AdopterId { get; set; }
         [Column("pet_id")]
         public int PetId { get; set; }
-        [Column("adoption_date")]
-        public DateTimeOffset AdoptionDate { get; set; }  // ✅ Correct
         [Column("status")]
         public string Status { get; set; } = string.Empty;
         [Column("created_at")]

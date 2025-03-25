@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetPals_BackEnd_Group_9.Models
 {
+    [Table("service_transaction")]
     public class ServiceTransaction
     {
         [Key]
@@ -28,7 +29,7 @@ namespace PetPals_BackEnd_Group_9.Models
         public string? UpdatedBy { get; set; }
 
 
-        public Service Service { get; set; } = null!;
-        public User User { get; set; } = null!;
+        public Service Service { get; set; } 
+        public User User { get; set; } 
     }
 }

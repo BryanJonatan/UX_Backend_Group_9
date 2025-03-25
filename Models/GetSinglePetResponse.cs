@@ -2,6 +2,7 @@
 {
     public class GetSinglePetResponse
     {
+        public int PetId { get; set; }
         public string OwnerName { get; set; } = String.Empty;
         public string Name { get; set; } = string.Empty;
         public string Species { get; set; } = string.Empty;

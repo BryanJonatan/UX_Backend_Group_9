@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Bcpg;
 using PetPals_BackEnd_Group_9.Command;
 using PetPals_BackEnd_Group_9.Models;
 
@@ -36,6 +37,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
 
             return new LoginResponseDto { Token = token, Message = "Login berhasil", 
                 User = new GetSingleUserResponse { 
+                    UserId = user.UserId,
                     Name = user.Name,
                     Email = user.Email,
                     Password = user.Password,

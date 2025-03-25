@@ -22,6 +22,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 .Where(p => p.Slug == request.Slug)
                 .Select(p => new GetSinglePetResponse
                 {
+                    PetId = p.PetId,
                     OwnerName = p.Owner.Name,
                     Name = p.Name,
                     Species = p.Species.Name,

@@ -43,13 +43,13 @@ namespace PetPals_BackEnd_Group_9.Models
         public required string Slug { get; set; }
 
         [Column("created_at")]
-        public DateTime CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         [Column("created_by")]
         public string CreatedBy { get; set; }
 
         [Column("updated_at")]
-        public DateTime? UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
 
         [Column("updated_by")]
         public string UpdatedBy { get; set; }

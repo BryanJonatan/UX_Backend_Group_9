@@ -17,6 +17,7 @@ namespace PetPals_BackEnd_Group_9
         public DbSet<Service> Services { get; set; }
         public DbSet<ForumPost> ForumPosts { get; set; }
         public DbSet<ForumComment> ForumComments { get; set; }
+        public DbSet<ServiceTransaction> ServiceTransactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -96,6 +97,58 @@ namespace PetPals_BackEnd_Group_9
                       .OnDelete(DeleteBehavior.NoAction);
             });
 
+            modelBuilder.Entity<Adoption>()
+                .HasOne(a => a.Adopter)
+                .WithMany()
+                .HasForeignKey(a => a.AdopterId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Adoption>()
+                .HasOne(a => a.Pet)
+                .WithMany()
+                .HasForeignKey(a => a.PetId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Adoption>()
+         .Property(a => a.AdoptionDate)
+         .HasColumnType("DATETIMEOFFSET");
+
+            modelBuilder.Entity<Adoption>()
+                .Property(a => a.CreatedAt)
+                .HasColumnType("DATETIMEOFFSET");
+
+            modelBuilder.Entity<Adoption>()
+                .Property(a => a.UpdatedAt)
+                .HasColumnType("DATETIMEOFFSET");
+
+            modelBuilder.Entity<Adoption>()
+                .Property(a => a.BookingDate)
+                .HasColumnType("DATETIMEOFFSET");
+
+            modelBuilder.Entity<ServiceTransaction>()
+      .HasOne(st => st.Service)   // ✅ Reference to Service entity
+      .WithMany()                 // ✅ A Service can have many transactions
+      .HasForeignKey(st => st.ServiceId)  // ✅ FK is ServiceId
+      .OnDelete(DeleteBehavior.Restrict); // ✅ Prevent cascade delete
+
+            modelBuilder.Entity<ServiceTransaction>()
+                .HasOne(st => st.User)  // ✅ Reference to Adopter entity
+                .WithMany()                // ✅ An Adopter can have many transactions
+                .HasForeignKey(st => st.AdopterId)  // ✅ FK is AdopterId
+                .OnDelete(DeleteBehavior.Restrict); // ✅ Prevent cascade delete
+
+
+            modelBuilder.Entity<ServiceTransaction>()
+            .Property(st => st.BookingDate)
+            .HasColumnType("datetimeoffset");  // ✅ Forces correct type
+
+            modelBuilder.Entity<ServiceTransaction>()
+                .Property(st => st.CreatedAt)
+                .HasColumnType("datetimeoffset");
+
+            modelBuilder.Entity<ServiceTransaction>()
+                .Property(st => st.UpdatedAt)
+                .HasColumnType("datetimeoffset");
             //modelBuilder.Entity<ServiceCategory>().ToTable("service_categories");
             //modelBuilder.Entity<ServiceCategory>().ToTable("service_categories");
 
@@ -126,9 +179,9 @@ namespace PetPals_BackEnd_Group_9
             //          .OnDelete(DeleteBehavior.Restrict); // Prevent deletion of categories if services exist
             //});
 
-       
 
-           
+
+
 
             modelBuilder.Entity<Service>()
         .ToTable("services")  

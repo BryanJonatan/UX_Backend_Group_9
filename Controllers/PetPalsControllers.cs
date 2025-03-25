@@ -20,6 +20,9 @@ namespace PetPals_BackEnd_Group_9.Controllers
         private readonly SearchAdoptionListValidator _adoptionListValidator;
         private readonly GetServiceListQueryValidator _serviceListValidator;
         private readonly ILogger<PetPalsController> _logger;
+        private readonly AdoptionTransactionValidator _validator;
+        private readonly ServiceTransactionValidator _serviceTransactionValidator;
+
         public PetPalsController(
             IMediator mediator,
             SearchAdoptionListValidator adoptionListValidator,
@@ -29,6 +32,8 @@ namespace PetPals_BackEnd_Group_9.Controllers
             _adoptionListValidator = adoptionListValidator;
             _serviceListValidator = serviceListValidator;
             _logger = logger;
+            _validator = new AdoptionTransactionValidator();
+            _serviceTransactionValidator = new ServiceTransactionValidator();
         }
 
         [HttpGet("adoption-list")]
@@ -292,6 +297,128 @@ namespace PetPals_BackEnd_Group_9.Controllers
                 return StatusCode(500, problemDetails);
             }
         }
+
+        [HttpPost("adoptions-transaction")]
+        public async Task<IActionResult> AdoptPet([FromBody] AdoptionTransactionRequest request)
+        {
+            var validationResult = await _validator.ValidateAsync(request);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(new
+                {
+                    type = "https://tools.ietf.org/html/rfc7807",
+                    title = "Validation Error",
+                    status = 400,
+                    errors = validationResult.Errors.Select(e => new { e.PropertyName, e.ErrorMessage })
+                });
+            }
+
+            try
+            {
+                
+                var command = new AdoptionTransactionCommand(request.PetId, request.Name, request.Breed, request.UserId, request.BookingDate);
+                var result = await _mediator.Send(command);
+
+                if (result.Success)
+                {
+                    return Ok(new
+                    {
+                        message = "Adoption successful.",
+                        adoptionId = result.AdoptionId
+                    });
+                }
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, new
+                {
+                    error = result.Message ?? "Adoption failed."
+                });
+            }
+            catch (CustomException2 ex)
+            {
+                Log.Warning("Custom exception occurred: {Message}", ex.Message);
+                return StatusCode(ex.StatusCode, new
+                {
+                    type = "https://tools.ietf.org/html/rfc7807",
+                    title = "Error",
+                    status = ex.StatusCode,
+                    detail = ex.Message,
+                    error_code = ex.ErrorCode
+                });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Unexpected error occurred.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, new
+                {
+                    type = "https://tools.ietf.org/html/rfc7807",
+                    title = "Internal Server Error",
+                    status = 500,
+                    detail = "An unexpected error occurred."
+                });
+            }
+        }
+
+
+        [HttpPost("service-transaction")]
+        public async Task<IActionResult> CreateTransaction([FromBody] ServiceTransactionCommand serviceCommand)
+        {
+            var validationResult = await _serviceTransactionValidator.ValidateAsync(serviceCommand);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(new
+                {
+                    type = "https://tools.ietf.org/html/rfc7807",
+                    title = "Validation Error",
+                    status = 400,
+                    errors = validationResult.Errors.Select(e => new { e.PropertyName, e.ErrorMessage })
+                });
+            }
+
+            try
+            {
+                var result = await _mediator.Send(serviceCommand);
+
+                if (result.Success)
+                {
+                    return Ok(new
+                    {
+                        message = "Service transaction successful.",
+                        transactionId = result.TransactionId
+                    });
+                }
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, new
+                {
+                    error = result.Message ?? "Transaction failed."
+                });
+            }
+            catch (CustomException2 ex)
+            {
+                Log.Warning("Custom exception occurred: {Message}", ex.Message);
+                return StatusCode(ex.StatusCode, new
+                {
+                    type = "https://tools.ietf.org/html/rfc7807",
+                    title = "Error",
+                    status = ex.StatusCode,
+                    detail = ex.Message,
+                    error_code = ex.ErrorCode
+                });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Unexpected error occurred.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, new
+                {
+                    type = "https://tools.ietf.org/html/rfc7807",
+                    title = "Internal Server Error",
+                    status = 500,
+                    detail = "An unexpected error occurred."
+                });
+            }
+        }
+
+
     }
 
 }

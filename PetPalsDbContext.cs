@@ -18,7 +18,7 @@ namespace PetPals_BackEnd_Group_9
         public DbSet<ForumPost> ForumPosts { get; set; }
         public DbSet<ForumComment> ForumComments { get; set; }
         public DbSet<ServiceTransaction> ServiceTransactions { get; set; }
-
+        public DbSet<ForumCategory> ForumCategories { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -227,6 +227,12 @@ namespace PetPals_BackEnd_Group_9
                       .HasForeignKey(e => e.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
+
+            modelBuilder.Entity<ForumPost>()
+        .HasOne(f => f.ForumCategory)
+        .WithMany()
+        .HasForeignKey(f => f.ForumCategoryId)
+        .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ForumComment>(entity =>
             {

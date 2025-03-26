@@ -24,6 +24,9 @@ namespace PetPals_BackEnd_Group_9.Models
         public DateTimeOffset? UpdatedAt { get; set; } = DateTimeOffset.UtcNow;
         [Column("updated_by")]
         public string? UpdatedBy { get; set; } = string.Empty;
+        [Column("forum_category_id")]
+        public int ForumCategoryId { get; set; }
+        public ForumCategory ForumCategory { get; set; }
         public User User { get; set; }
     }
 }

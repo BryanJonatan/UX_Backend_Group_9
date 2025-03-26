@@ -53,6 +53,9 @@ builder.Services.AddDbContext<PetPalsDbContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.AddScoped<IForumCommentRepository, ForumCommentRepository>();
+builder.Services.AddScoped<IForumPostRepository, ForumPostRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IForumCategoryRepository, ForumCategoryRepository>();
 
 
 

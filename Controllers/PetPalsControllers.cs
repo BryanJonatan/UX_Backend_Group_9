@@ -417,6 +417,13 @@ namespace PetPals_BackEnd_Group_9.Controllers
             }
         }
 
+        [HttpGet("transaction-history/{adopterId}")]
+        public async Task<IActionResult> GetTransactionHistory(int adopterId)
+        {
+            var query = new TransactionHistoryQuery { AdopterId = adopterId };
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
 
     }
 

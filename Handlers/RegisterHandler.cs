@@ -48,6 +48,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 Password = hashedPassword,
                 Phone = request.Phone,
                 Address = request.Address,
+                City = request.City,
                 RoleId = request.RoleId,
                 CreatedAt = DateTimeOffset.UtcNow,
                 CreatedBy = "SYSTEM",
@@ -70,7 +71,9 @@ namespace PetPals_BackEnd_Group_9.Handlers
                     UserId = newUser.UserId,
                     Name = newUser.Name,
                     Email = newUser.Email,
-                    Role = role.Name
+                    Role = role.Name,
+                    Address = newUser.Address,
+                    City = newUser.City
                 };
             }
             catch (Exception ex)

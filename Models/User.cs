@@ -18,11 +18,12 @@ namespace PetPals_BackEnd_Group_9.Models
         [Required, MaxLength(255)]
         public string Password { get; set; } = string.Empty;
 
-        [MaxLength(20)]
-        public string? Phone { get; set; }
+        [Required,MaxLength(20)]
+        public string Phone { get; set; }
 
-        [MaxLength(255)]
-        public string? Address { get; set; }
+    
+        [Required,MaxLength(255)]
+        public string Address { get; set; }
 
         [Required]
         [Column("role_id")]
@@ -40,5 +41,8 @@ namespace PetPals_BackEnd_Group_9.Models
 
         [Column("updated_by")]
         public string UpdatedBy { get; set; } = "SYSTEM";
+
+        [Required,Column("city")]
+        public string City { get; set; }
     }
 }

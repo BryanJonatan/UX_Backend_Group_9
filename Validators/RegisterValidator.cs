@@ -10,8 +10,9 @@ namespace PetPals_BackEnd_Group_9.Validators
             RuleFor(x => x.Name).NotEmpty().MaximumLength(255);
             RuleFor(x => x.Email).NotEmpty().EmailAddress().MaximumLength(100);
             RuleFor(x => x.Password).NotEmpty().MinimumLength(8).MaximumLength(255);
-            RuleFor(x => x.Phone).MaximumLength(20);
-            RuleFor(x => x.Address).MaximumLength(255);
+            RuleFor(x => x.Phone).NotEmpty().MaximumLength(20);
+            RuleFor(x => x.Address).NotEmpty().MaximumLength(255);
+            RuleFor(x => x.City).NotEmpty().MaximumLength(255);
             RuleFor(x => x.RoleId).GreaterThan(0);
         }
     }

@@ -8,8 +8,9 @@ namespace PetPals_BackEnd_Group_9.Command
         public string Name { get; }
         public string Email { get; }
         public string Password { get; }
-        public string? Phone { get; }
-        public string? Address { get; }
+        public string Phone { get; }
+        public string Address { get; }
+        public string City { get; }
         public int RoleId { get; }
 
         public RegisterCommand(RegisterRequestDto request)
@@ -19,7 +20,9 @@ namespace PetPals_BackEnd_Group_9.Command
             Password = request.Password;
             Phone = request.Phone;
             Address = request.Address;
+            City = request.City;
             RoleId = request.RoleId;
+
         }
     }
 

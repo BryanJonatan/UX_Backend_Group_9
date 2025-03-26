@@ -30,24 +30,26 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 throw new CustomException2("Pet is either not found or already adopted.", "pet_not_available", 400);
             }
 
-         
+
             var adoption = new Adoption
             {
                 AdopterId = command.UserId,
                 PetId = command.PetId,
-                Status = "pending", // pending, accepted, rejected
+                Status = "approved",
                 CreatedAt = DateTimeOffset.UtcNow,
                 CreatedBy = command.UserId.ToString(),
                 Price = pet.Price,
-                BookingDate = DateTimeOffset.UtcNow, // nanti baru update aja
-                UpdatedAt = DateTimeOffset.UtcNow,  
+                BookingDate = DateTimeOffset.UtcNow,
+                UpdatedAt = DateTimeOffset.UtcNow,
                 UpdatedBy = command.UserId.ToString(),
+
             };
 
-            pet.Status = "reserved"; // available, reserved, adopted
-            pet.UpdatedAt = DateTimeOffset.UtcNow;  
-            pet.UpdatedBy = "SYSTEM";
-         
+            pet.Status = "Adopted";
+            pet.UpdatedAt = DateTimeOffset.UtcNow;
+            pet.UpdatedBy = command.UserId.ToString();
+
+
             _context.Adoptions.Add(adoption);
             await _context.SaveChangesAsync(cancellationToken);
 

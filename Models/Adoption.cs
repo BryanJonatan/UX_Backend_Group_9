@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetPals_BackEnd_Group_9.Models
 {
+    [Table("adoptions")]
     public class Adoption
     {
         [Column("adoption_id")]
@@ -12,7 +13,7 @@ namespace PetPals_BackEnd_Group_9.Models
         [Column("pet_id")]
         public int PetId { get; set; }
         [Column("status")]
-        public string Status { get; set; } = string.Empty;
+        public string Status { get; set; } 
         [Column("created_at")]
         public DateTimeOffset CreatedAt { get; set; }  // ✅ Correct
         [Column("created_by")]

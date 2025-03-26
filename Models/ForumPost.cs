@@ -1,14 +1,29 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetPals_BackEnd_Group_9.Models
 {
+    [Table("forum_posts")]
     public class ForumPost
     {
-        [Key]
+        [Column("forum_post_id")]
         public int ForumPostId { get; set; }
+        [Column("user_id")]
         public int UserId { get; set; }
-        public string Title { get; set; } = string.Empty;
-        public string Content { get; set; } = string.Empty;
-        public User User { get; set; } = null!;
+        [Column("name_user")]
+        public string? UserName { get; set; } = string.Empty;
+        [Column("title")]
+        public string Title { get; set; }
+        [Column("content")]
+        public string Content { get; set; }
+        [Column("created_at")]
+        public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
+        [Column("created_by")]
+        public string? CreatedBy { get; set; } = string.Empty;
+        [Column("updated_at")]
+        public DateTimeOffset? UpdatedAt { get; set; } = DateTimeOffset.UtcNow;
+        [Column("updated_by")]
+        public string? UpdatedBy { get; set; } = string.Empty;
+        public User User { get; set; }
     }
 }

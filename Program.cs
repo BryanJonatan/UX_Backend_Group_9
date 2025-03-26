@@ -12,6 +12,7 @@ using System.Reflection;
 using PetPals_BackEnd_Group_9.Models;
 using PetPals_BackEnd_Group_9.Validators;
 using PetPals_BackEnd_Group_9.Command;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -46,6 +47,13 @@ builder.Services.AddScoped<SearchAdoptionListValidator>();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(RegisterCommand).Assembly));
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+builder.Services.AddScoped<IForumPostRepository, ForumPostRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddDbContext<PetPalsDbContext>(options =>
+    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+builder.Services.AddScoped<IForumCommentRepository, ForumCommentRepository>();
+
 
 
 var app = builder.Build();

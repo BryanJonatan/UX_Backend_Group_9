@@ -441,6 +441,43 @@ namespace PetPals_BackEnd_Group_9.Controllers
             }
         }
 
+        [HttpPost("forum-post")]
+        public async Task<IActionResult> CreateForumPost([FromBody] CreateForumPostCommand command)
+        {
+            var validationResult = new CreateForumPostValidator().Validate(command);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(new
+                {
+                    type = "https://tools.ietf.org/html/rfc7807",
+                    title = "Validation Error",
+                    status = 400,
+                    errors = validationResult.Errors.Select(e => e.ErrorMessage)
+                });
+            }
+
+            var result = await _mediator.Send(command);
+            return CreatedAtAction(nameof(CreateForumPost), new { id = result.ForumPostId }, result);
+        }
+
+        [HttpPost("forum-comment")]
+        public async Task<IActionResult> CreateForumComment([FromBody] CreateForumCommentCommand command)
+        {
+            var validationResult = new CreateForumCommentValidator().Validate(command);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(new
+                {
+                    type = "https://tools.ietf.org/html/rfc7807",
+                    title = "Validation Error",
+                    status = 400,
+                    errors = validationResult.Errors.Select(e => e.ErrorMessage)
+                });
+            }
+
+            var result = await _mediator.Send(command);
+            return CreatedAtAction(nameof(CreateForumComment), new { id = result.ForumCommentId }, result);
+        }
     }
 
 }

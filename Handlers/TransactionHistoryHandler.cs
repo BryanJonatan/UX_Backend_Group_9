@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PetPals_BackEnd_Group_9.Models;
+using System.Net;
 
 namespace PetPals_BackEnd_Group_9.Handlers
 {
@@ -22,7 +23,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
 
             var adoptions = await _dbContext.Adoptions
                 .Where(a => a.AdopterId == request.AdopterId)
-                .Include(a => a.Pet)  // Ensure Pet is loaded
+                .Include(a => a.Pet)
                 .Select(a => new TransactionHistoryDto
                 {
                     TransactionType = "Adoption",
@@ -34,7 +35,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
 
             var serviceTransactions = await _dbContext.ServiceTransactions
                 .Where(st => st.AdopterId == request.AdopterId)
-                .Include(st => st.Service)  // Ensure Service is loaded
+                .Include(st => st.Service)
                 .Select(st => new TransactionHistoryDto
                 {
                     TransactionType = "Service",
@@ -48,15 +49,13 @@ namespace PetPals_BackEnd_Group_9.Handlers
                                         .OrderByDescending(t => t.BookingDate)
                                         .ToList();
 
-            if (transactions.Count == 0)
+            if (!transactions.Any())
             {
                 _logger.LogWarning("No transactions found for AdopterId: {AdopterId}", request.AdopterId);
-            }
-            else
-            {
-                _logger.LogInformation("Retrieved {Count} transactions for AdopterId: {AdopterId}", transactions.Count, request.AdopterId);
+                throw new ApiException(HttpStatusCode.NotFound, "Transaction history not found", "No transactions available for the given AdopterId.");
             }
 
+            _logger.LogInformation("Retrieved {Count} transactions for AdopterId: {AdopterId}", transactions.Count, request.AdopterId);
             return transactions;
         }
     }

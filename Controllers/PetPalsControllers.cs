@@ -420,9 +420,25 @@ namespace PetPals_BackEnd_Group_9.Controllers
         [HttpGet("transaction-history/{adopterId}")]
         public async Task<IActionResult> GetTransactionHistory(int adopterId)
         {
-            var query = new TransactionHistoryQuery { AdopterId = adopterId };
-            var result = await _mediator.Send(query);
-            return Ok(result);
+            try
+            {
+                _logger.LogInformation("Processing transaction history request for AdopterId: {AdopterId}", adopterId);
+
+                var query = new TransactionHistoryQuery { AdopterId = adopterId };
+                var result = await _mediator.Send(query);
+
+                return Ok(result);
+            }
+            catch (ApiException ex)
+            {
+                _logger.LogWarning("Error fetching transaction history for AdopterId: {AdopterId}: {Message}", adopterId, ex.Message);
+                return StatusCode((int)ex.StatusCode, ex.ToProblemDetails(HttpContext));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error while fetching transaction history for AdopterId: {AdopterId}", adopterId);
+                return StatusCode((int)HttpStatusCode.InternalServerError, new ApiException(HttpStatusCode.InternalServerError, "Internal Server Error", ex.Message).ToProblemDetails(HttpContext));
+            }
         }
 
     }

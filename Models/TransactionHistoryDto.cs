@@ -6,5 +6,7 @@
         public string PetOrServiceName { get; set; }
         public DateTimeOffset BookingDate { get; set; }
         public decimal? Price { get; set; }
+
+        public object Item { get; set; }
     }
 }

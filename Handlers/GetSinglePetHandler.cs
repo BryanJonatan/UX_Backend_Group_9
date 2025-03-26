@@ -24,13 +24,15 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 {
                     PetId = p.PetId,
                     OwnerName = p.Owner.Name,
+                    OwnerPhone = p.Owner.Phone,
                     Name = p.Name,
                     Species = p.Species.Name,
                     Breed = p.Breed,
                     Age = p.Age,
                     Description = p.Description,
                     Status = p.Status,
-                    Price = p.Price
+                    Price = p.Price,
+                    Owner = p.Owner
                 })
                 .FirstOrDefaultAsync(cancellationToken);
 

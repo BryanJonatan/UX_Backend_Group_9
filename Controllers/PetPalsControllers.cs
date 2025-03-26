@@ -418,13 +418,13 @@ namespace PetPals_BackEnd_Group_9.Controllers
         }
 
         [HttpGet("transaction-history/{adopterId}")]
-        public async Task<IActionResult> GetTransactionHistory(int adopterId)
+        public async Task<IActionResult> GetTransactionHistory(int adopterId, string transactionType = "All")
         {
             try
             {
                 _logger.LogInformation("Processing transaction history request for AdopterId: {AdopterId}", adopterId);
 
-                var query = new TransactionHistoryQuery { AdopterId = adopterId };
+                var query = new TransactionHistoryQuery { AdopterId = adopterId, TransactionType = transactionType };
                 var result = await _mediator.Send(query);
 
                 return Ok(result);

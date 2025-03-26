@@ -29,7 +29,8 @@ namespace PetPals_BackEnd_Group_9.Handlers
                     TransactionType = "Adoption",
                     PetOrServiceName = a.Pet != null ? a.Pet.Name : "Unknown Pet",
                     BookingDate = (DateTimeOffset)a.BookingDate,
-                    Price = a.Pet != null ? a.Pet.Price : 0
+                    Price = a.Pet != null ? a.Pet.Price : 0,
+                    Item = a.Pet
                 })
                 .ToListAsync(cancellationToken);
 
@@ -41,13 +42,32 @@ namespace PetPals_BackEnd_Group_9.Handlers
                     TransactionType = "Service",
                     PetOrServiceName = st.Service != null ? st.Service.Name : "Unknown Service",
                     BookingDate = st.BookingDate,
-                    Price = st.Service != null ? st.Service.Price : 0
+                    Price = st.Service != null ? st.Service.Price : 0,
+                    Item = st.Service
                 })
                 .ToListAsync(cancellationToken);
 
-            var transactions = adoptions.Concat(serviceTransactions)
-                                        .OrderByDescending(t => t.BookingDate)
-                                        .ToList();
+            List<TransactionHistoryDto> transactions = new List<TransactionHistoryDto>();
+
+            if (request.TransactionType.ToLower().Equals("adoption"))
+            {
+                transactions = adoptions
+                                .OrderByDescending(t => t.BookingDate)
+                                .ToList();
+            }
+            else if (request.TransactionType.ToLower().Equals("service"))
+            {
+                transactions = serviceTransactions
+                                .OrderByDescending(t => t.BookingDate)
+                                .ToList();
+            }
+            else
+            {
+                transactions = adoptions
+                                .Concat(serviceTransactions)
+                                .OrderByDescending(t => t.BookingDate)
+                                .ToList();
+            }
 
             if (!transactions.Any())
             {
@@ -58,5 +78,6 @@ namespace PetPals_BackEnd_Group_9.Handlers
             _logger.LogInformation("Retrieved {Count} transactions for AdopterId: {AdopterId}", transactions.Count, request.AdopterId);
             return transactions;
         }
+
     }
 }

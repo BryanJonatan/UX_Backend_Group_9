@@ -22,13 +22,16 @@ namespace PetPals_BackEnd_Group_9.Handlers
     .Where(s => s.Slug == request.Slug)
     .Select(s => new GetSingleServiceResponse
     {
+        ServiceId = s.ServiceId,
         ProviderName = s.Provider.Name,
+        ProviderPhone = s.Provider.Phone,
         Name  = s.Name,
          CategoryName = s.Category.Name,
          Description = s.Description,
          Price = s.Price,
          Address = s.Address,
-         City  = s.City
+         City  = s.City,
+         Provider = s.Provider
     })
     .FirstOrDefaultAsync(cancellationToken);
 

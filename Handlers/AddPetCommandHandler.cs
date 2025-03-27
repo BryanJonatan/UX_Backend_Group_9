@@ -45,7 +45,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 Status = "Available",
                 OwnerId = request.OwnerId,
                 Owner = owner,
-                Slug = $"{owner.Name}-{Guid.NewGuid()}".ToLower().Replace(" ", "-"),
+                Slug = request.Name.ToLower().Replace(" ", "-"),
                 CreatedAt = DateTimeOffset.UtcNow,
                 CreatedBy = owner.Name,
                 UpdatedAt = DateTimeOffset.UtcNow,

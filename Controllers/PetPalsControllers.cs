@@ -9,6 +9,7 @@ using System.Linq;
 using PetPals_BackEnd_Group_9.Models;
 using PetPals_BackEnd_Group_9.Command;
 using PetPals_BackEnd_Group_9.Handlers;
+using Microsoft.EntityFrameworkCore;
 
 namespace PetPals_BackEnd_Group_9.Controllers
 {
@@ -512,6 +513,34 @@ namespace PetPals_BackEnd_Group_9.Controllers
 
             var result = await _mediator.Send(command);
             return CreatedAtAction(nameof(AddService), new { id = result.ServiceId }, result);
+        }
+        [HttpGet("get-all-forum-comments")]
+        public async Task<IActionResult> GetAllForumComments([FromQuery] int? userId, [FromQuery] int? commentId)
+        {
+            try
+            {
+                Log.Information("Memproses permintaan GET forum comments dengan userId={UserId} dan commentId={CommentId}",
+                    userId, commentId);
+
+                var query = new GetAllForumCommentsQuery
+                {
+                    UserId = userId,
+                    CommentId = commentId
+                };
+
+                var comments = await _mediator.Send(query);
+
+                return Ok(comments);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Terjadi kesalahan saat mengambil forum comments.");
+                return Problem(
+                    title: "Internal Server Error",
+                    detail: "Terjadi kesalahan pada server.",
+                    statusCode: StatusCodes.Status500InternalServerError
+                );
+            }
         }
     }
 

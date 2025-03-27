@@ -21,11 +21,14 @@ namespace PetPals_BackEnd_Group_9.Models
         [Column("created_by")]
         public string? CreatedBy { get; set; } = string.Empty;
         [Column("updated_at")]
-        public DateTimeOffset? UpdatedAt { get; set; } = DateTimeOffset.UtcNow;
+        public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.UtcNow;
         [Column("updated_by")]
         public string? UpdatedBy { get; set; } = string.Empty;
         [Column("forum_category_id")]
         public int ForumCategoryId { get; set; }
+        [Column("slug")]
+        public string Slug { get; set; }
+
         public ForumCategory ForumCategory { get; set; }
         public User User { get; set; }
     }

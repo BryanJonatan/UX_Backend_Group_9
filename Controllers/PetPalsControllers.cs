@@ -495,6 +495,44 @@ namespace PetPals_BackEnd_Group_9.Controllers
             var result = await _mediator.Send(query);
             return Ok(result);
         }
+
+        [HttpGet("get-all-forum-posts/{slug}")]
+        public async Task<IActionResult> GetForumPostBySlug(string slug)
+        {
+            try
+            {
+                var query = new GetForumPostBySlugQuery(slug);
+                var post = await _mediator.Send(query);
+
+                if (post == null)
+                {
+                    return NotFound(new
+                    {
+                        type = "https://tools.ietf.org/html/rfc7807",
+                        title = "Not Found",
+                        status = 404,
+                        detail = $"Forum post with slug '{slug}' not found.",
+                        instance = HttpContext.Request.Path
+                    });
+                }
+
+                return Ok(post);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error retrieving forum post with slug {Slug}", slug);
+
+                return StatusCode(500, new
+                {
+                    type = "https://tools.ietf.org/html/rfc7807",
+                    title = "Internal Server Error",
+                    status = 500,
+                    detail = "An unexpected error occurred while retrieving the forum post.",
+                    instance = HttpContext.Request.Path
+                });
+            }
+        }
+
         [HttpPost("input-new-pets")]
         public async Task<ActionResult<PetResponse>> AddPet([FromBody] AddPetCommand command)
         {

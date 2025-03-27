@@ -486,6 +486,13 @@ namespace PetPals_BackEnd_Group_9.Controllers
             var categories = await _mediator.Send(query);
             return Ok(categories);
         }
+
+        [HttpGet("get-all-forum-post")]
+        public async Task<ActionResult<List<ForumPostResponse>>> GetAllForumPosts()
+        {
+            var result = await _mediator.Send(new GetAllForumPostsQuery());
+            return Ok(result);
+        }
     }
 
 }

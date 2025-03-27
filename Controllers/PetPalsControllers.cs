@@ -478,6 +478,14 @@ namespace PetPals_BackEnd_Group_9.Controllers
             var result = await _mediator.Send(command);
             return CreatedAtAction(nameof(CreateForumComment), new { id = result.ForumCommentId }, result);
         }
+
+        [HttpGet("get-all-forum-category")]
+        public async Task<IActionResult> GetForumCategories([FromQuery] int? forumCategoryId)
+        {
+            var query = new GetForumCategoriesQuery(forumCategoryId);
+            var categories = await _mediator.Send(query);
+            return Ok(categories);
+        }
     }
 
 }

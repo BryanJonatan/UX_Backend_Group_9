@@ -30,7 +30,8 @@ namespace PetPals_BackEnd_Group_9.Handlers
                     UserId = c.UserId,
                     Comment = c.Comment,
                     NameUser = c.NameUser,
-                    CreatedAt = c.CreatedAt
+                    CreatedAt = c.CreatedAt,
+                    User = c.User,
                 })
                 .ToListAsync(cancellationToken);
 

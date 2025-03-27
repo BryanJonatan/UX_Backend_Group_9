@@ -489,9 +489,9 @@ namespace PetPals_BackEnd_Group_9.Controllers
         }
 
         [HttpGet("get-all-forum-posts")]
-        public async Task<ActionResult<List<ForumPostResponse>>> GetForumPosts([FromQuery] int? forumPostId, [FromQuery] string? title)
+        public async Task<ActionResult<List<ForumPostResponse>>> GetForumPosts([FromQuery] int? forumPostId, [FromQuery] int? forumCategoryId, [FromQuery] string? title)
         {
-            var query = new GetAllForumPostsQuery(forumPostId, title);
+            var query = new GetAllForumPostsQuery(forumPostId, forumCategoryId, title);
             var result = await _mediator.Send(query);
             return Ok(result);
         }

@@ -11,5 +11,6 @@
         public DateTimeOffset? UpdatedAt { get; set; }
         public string? UpdatedBy { get; set; }
         public string NameUser { get; set; }
+        public User User { get; set; }
     }
 }

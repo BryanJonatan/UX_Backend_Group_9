@@ -30,6 +30,14 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 query = query.Where(fp => fp.ForumPostId == request.ForumPostId.Value);
             }
 
+            if (request.ForumCategoryId.HasValue)
+            {
+                if (request.ForumCategoryId != 0)
+                {
+                    query = query.Where(fp => fp.ForumCategoryId == request.ForumCategoryId.Value);
+                }
+            }
+
             if (!string.IsNullOrWhiteSpace(request.Title))
             {
                 query = query.Where(fp => fp.Title.Contains(request.Title));
@@ -43,11 +51,13 @@ namespace PetPals_BackEnd_Group_9.Handlers
                     ForumCategoryId = fp.ForumCategoryId,
                     CategoryName = fp.ForumCategory.CategoryName,
                     Title = fp.Title,
+                    Slug = fp.Slug,
                     Content = fp.Content,
                     CreatedAt = fp.CreatedAt,
                     CreatedBy = fp.CreatedBy,
                     UpdatedAt = fp.UpdatedAt,
-                    UpdatedBy = fp.UpdatedBy
+                    UpdatedBy = fp.UpdatedBy,
+                    User = fp.User,
                 })
                 .ToListAsync(cancellationToken);
 

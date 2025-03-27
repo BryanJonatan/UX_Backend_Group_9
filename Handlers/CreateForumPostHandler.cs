@@ -2,6 +2,9 @@
 using PetPals_BackEnd_Group_9.Command;
 using PetPals_BackEnd_Group_9.Models;
 using PetPals_BackEnd_Group_9.Validators;
+using System;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace PetPals_BackEnd_Group_9.Handlers
 {
@@ -69,7 +72,18 @@ namespace PetPals_BackEnd_Group_9.Handlers
         // ✅ Helper function to generate slug from title
         private string GenerateSlug(string title)
         {
-            return title.ToLower().Replace(" ", "-");
+            if (string.IsNullOrWhiteSpace(title)) return string.Empty;
+
+            // Konversi ke huruf kecil
+            title = title.ToLower().Trim();
+
+            // Hapus karakter khusus kecuali spasi dan tanda hubung
+            title = Regex.Replace(title, @"[^\w\s-]", "");
+
+            // Ganti spasi dan multiple tanda hubung dengan "-"
+            title = Regex.Replace(title, @"\s+", "-");
+
+            return title;
         }
     }
 }

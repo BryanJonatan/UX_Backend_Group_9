@@ -28,7 +28,8 @@ namespace PetPals_BackEnd_Group_9.Handlers
                     CreatedAt = p.CreatedAt,
                     CreatedBy = p.CreatedBy,
                     UpdatedAt = p.UpdatedAt,
-                    UpdatedBy = p.UpdatedBy
+                    UpdatedBy = p.UpdatedBy,
+                    User = p.User,
                 })
                 .FirstOrDefaultAsync(cancellationToken);
 

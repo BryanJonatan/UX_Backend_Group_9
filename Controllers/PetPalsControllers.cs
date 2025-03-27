@@ -479,7 +479,7 @@ namespace PetPals_BackEnd_Group_9.Controllers
             return CreatedAtAction(nameof(CreateForumComment), new { id = result.ForumCommentId }, result);
         }
 
-        [HttpGet("get-all-forum-category")]
+        [HttpGet("get-all-forum-categories")]
         public async Task<IActionResult> GetForumCategories([FromQuery] int? forumCategoryId)
         {
             var query = new GetForumCategoriesQuery(forumCategoryId);
@@ -487,18 +487,31 @@ namespace PetPals_BackEnd_Group_9.Controllers
             return Ok(categories);
         }
 
-        [HttpGet("get-all-forum-post")]
+        [HttpGet("get-all-forum-posts")]
         public async Task<ActionResult<List<ForumPostResponse>>> GetForumPosts([FromQuery] int? forumPostId, [FromQuery] string? title)
         {
             var query = new GetAllForumPostsQuery(forumPostId, title);
             var result = await _mediator.Send(query);
             return Ok(result);
         }
-        [HttpPost("input-pets")]
+        [HttpPost("input-new-pets")]
         public async Task<ActionResult<PetResponse>> AddPet([FromBody] AddPetCommand command)
         {
             var result = await _mediator.Send(command);
             return CreatedAtAction(nameof(AddPet), new { id = result.PetId }, result);
+        }
+        [HttpPost("input-new-services")]
+        public async Task<IActionResult> AddService([FromBody] AddServiceCommand command)
+        {
+            var validator = new AddServiceCommandValidator();
+            var validationResult = await validator.ValidateAsync(command);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(new { errors = validationResult.Errors });
+            }
+
+            var result = await _mediator.Send(command);
+            return CreatedAtAction(nameof(AddService), new { id = result.ServiceId }, result);
         }
     }
 

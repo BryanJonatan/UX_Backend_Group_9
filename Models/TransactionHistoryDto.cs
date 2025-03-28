@@ -2,11 +2,10 @@
 {
     public class TransactionHistoryDto
     {
-        public string TransactionType { get; set; } 
-        public string PetOrServiceName { get; set; }
+        public string TransactionType { get; set; }
         public DateTimeOffset BookingDate { get; set; }
         public decimal? Price { get; set; }
-
+        public User User { get; set; }
         public object Item { get; set; }
     }
 }

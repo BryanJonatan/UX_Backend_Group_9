@@ -2,7 +2,8 @@
 {
     public class AdoptionTransactionRequest
     {
+        public int AdopterId { get; set; }
+        public int OwnerId { get; set; }
         public int PetId { get; set; }
-        public int UserId { get; set; }
     }
 }

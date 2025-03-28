@@ -18,7 +18,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
 
         public async Task<ServiceTransactionResponse> Handle(ServiceTransactionCommand command, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Processing service transaction for ServiceId: {ServiceId}, AdopterId: {AdopterId}", command.ServiceId, command.AdopterId);
+            _logger.LogInformation("Processing service transaction for ServiceId: {ServiceId}, AdopterId: {AdopterId}, ProviderId: {ProviderId}", command.ServiceId, command.AdopterId, command.ProviderId);
 
             // ✅ Check if Adopter (User) exists
             var adopterExists = await _context.Users.AnyAsync(u => u.UserId == command.AdopterId, cancellationToken);
@@ -40,6 +40,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
             var transaction = new ServiceTransaction
             {
                 AdopterId = command.AdopterId,
+                ProviderId = command.ProviderId,
                 ServiceId = command.ServiceId,
                 BookingDate = command.BookingDate,  // ✅ Allow user-specified BookingDate
                 Price = service.Price,  // ✅ Fetch price from DB, preventing modification
@@ -61,7 +62,6 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 Success = true,
                 Message = "Service transaction successful.",
                 TransactionId = transaction.TransactionId,
-                
             };
         }
 

@@ -17,23 +17,21 @@ namespace PetPals_BackEnd_Group_9.Handlers
         public async Task<GetSingleServiceResponse> Handle(GetSingleServiceQuery request, CancellationToken cancellationToken)
         {
             var service = await _context.Services
-    .Include(s => s.Category)
-    .Include(s => s.Provider)
-    .Where(s => s.Slug == request.Slug)
-    .Select(s => new GetSingleServiceResponse
-    {
-        ServiceId = s.ServiceId,
-        ProviderName = s.Provider.Name,
-        ProviderPhone = s.Provider.Phone,
-        Name  = s.Name,
-         CategoryName = s.Category.Name,
-         Description = s.Description,
-         Price = s.Price,
-         Address = s.Address,
-         City  = s.City,
-         Provider = s.Provider
-    })
-    .FirstOrDefaultAsync(cancellationToken);
+                .Include(s => s.Category)
+                .Include(s => s.Provider)
+                .Where(s => s.Slug == request.Slug)
+                .Select(s => new GetSingleServiceResponse
+                {
+                    ServiceId = s.ServiceId,
+                    Name  = s.Name,
+                     Description = s.Description,
+                     Price = s.Price,
+                     Address = s.Address,
+                     City  = s.City,
+                     Provider = s.Provider,
+                     Category = s.Category,
+                })
+                .FirstOrDefaultAsync(cancellationToken);
 
             if (service == null)
             {

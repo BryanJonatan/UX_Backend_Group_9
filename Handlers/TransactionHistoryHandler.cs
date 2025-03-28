@@ -23,26 +23,30 @@ namespace PetPals_BackEnd_Group_9.Handlers
 
             var adoptions = await _dbContext.Adoptions
                 .Where(a => a.AdopterId == request.AdopterId)
+                .Include(a => a.Owner)
                 .Include(a => a.Pet)
+                .Include(a => a.Pet.Species)
                 .Select(a => new TransactionHistoryDto
                 {
                     TransactionType = "Adoption",
-                    PetOrServiceName = a.Pet != null ? a.Pet.Name : "Unknown Pet",
                     BookingDate = (DateTimeOffset)a.BookingDate,
                     Price = a.Pet != null ? a.Pet.Price : 0,
+                    User = a.Owner,
                     Item = a.Pet
                 })
                 .ToListAsync(cancellationToken);
 
             var serviceTransactions = await _dbContext.ServiceTransactions
                 .Where(st => st.AdopterId == request.AdopterId)
+                .Include(st => st.Provider)
                 .Include(st => st.Service)
+                .Include(st => st.Service.Category)
                 .Select(st => new TransactionHistoryDto
                 {
                     TransactionType = "Service",
-                    PetOrServiceName = st.Service != null ? st.Service.Name : "Unknown Service",
                     BookingDate = st.BookingDate,
                     Price = st.Service != null ? st.Service.Price : 0,
+                    User = st.Provider,
                     Item = st.Service
                 })
                 .ToListAsync(cancellationToken);

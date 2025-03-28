@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PetPals_BackEnd_Group_9.Models
 {
@@ -42,6 +43,8 @@ namespace PetPals_BackEnd_Group_9.Models
 
         [Required, Column("slug")]
         public required string Slug { get; set; }
+        [Column("image_url")]
+        public string? ImageUrl { get; set; }
 
         [Column("created_at")]
         public DateTimeOffset CreatedAt { get; set; }

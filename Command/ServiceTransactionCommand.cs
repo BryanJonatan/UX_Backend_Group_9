@@ -6,6 +6,7 @@ namespace PetPals_BackEnd_Group_9.Command
     public class ServiceTransactionCommand : IRequest<ServiceTransactionResponse>
     {
         public int AdopterId { get; set; }  
+        public int ProviderId { get; set; }
         public int ServiceId { get; set; }
         public DateTimeOffset BookingDate { get; set; }
 

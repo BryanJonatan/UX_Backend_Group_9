@@ -11,6 +11,8 @@ namespace PetPals_BackEnd_Group_9.Models
         public int TransactionId { get; set; }
         [Column("adopter_id")]
         public int AdopterId { get; set; }
+        [Column("provider_id")]
+        public int ProviderId { get; set; }
         [Column("service_id")]
         public int ServiceId { get; set; }
         [Column("booking_date")]
@@ -28,8 +30,9 @@ namespace PetPals_BackEnd_Group_9.Models
         [Column("updated_by")]
         public string? UpdatedBy { get; set; }
 
-
+        public User Adopter { get; set; }
+        public User Provider { get; set; }
         public Service Service { get; set; } 
-        public User User { get; set; } 
+        
     }
 }

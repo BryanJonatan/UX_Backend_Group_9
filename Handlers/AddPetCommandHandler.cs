@@ -46,6 +46,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 OwnerId = request.OwnerId,
                 Owner = owner,
                 Slug = request.Name.ToLower().Replace(" ", "-"),
+                ImageUrl = request.ImageUrl,
                 CreatedAt = DateTimeOffset.UtcNow,
                 CreatedBy = owner.Name,
                 UpdatedAt = DateTimeOffset.UtcNow,

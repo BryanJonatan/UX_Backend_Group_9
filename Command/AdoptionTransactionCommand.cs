@@ -5,13 +5,14 @@ namespace PetPals_BackEnd_Group_9.Command
 {
     public class AdoptionTransactionCommand : IRequest<AdoptionTransactionResponse>
     {
+        public int AdopterId { get; set; }
+        public int OwnerId { get; set; }
         public int PetId { get; set; }
-        public int UserId { get; set; }
-
-        public AdoptionTransactionCommand(int petId, int userId)
+        public AdoptionTransactionCommand(int petId, int adopterId, int ownerId)
         {
             PetId = petId;
-            UserId = userId;
+            AdopterId = adopterId;
+            OwnerId = ownerId;
         }
     }
 }

@@ -23,16 +23,14 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 .Select(p => new GetSinglePetResponse
                 {
                     PetId = p.PetId,
-                    OwnerName = p.Owner.Name,
-                    OwnerPhone = p.Owner.Phone,
                     Name = p.Name,
-                    Species = p.Species.Name,
                     Breed = p.Breed,
                     Age = p.Age,
                     Description = p.Description,
                     Status = p.Status,
                     Price = p.Price,
-                    Owner = p.Owner
+                    Owner = p.Owner,
+                    Species = p.Species,
                 })
                 .FirstOrDefaultAsync(cancellationToken);
 

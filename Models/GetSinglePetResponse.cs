@@ -3,10 +3,7 @@
     public class GetSinglePetResponse
     {
         public int PetId { get; set; }
-        public string OwnerName { get; set; } = String.Empty;
-        public string OwnerPhone { get; set; } = String.Empty;
         public string Name { get; set; } = string.Empty;
-        public string Species { get; set; } = string.Empty;
         public string Breed { get; set; } = String.Empty;
         public int Age { get; set; }
         public string Description { get; set; } = String.Empty ;
@@ -15,5 +12,6 @@
         public string CreatedAt { get; set; } = String.Empty;
         public string UpdatedAt { get; set; } = String.Empty;
         public User Owner { get; set; }
+        public Species Species { get; set; }
     }
 }

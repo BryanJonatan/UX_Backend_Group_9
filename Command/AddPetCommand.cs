@@ -11,6 +11,7 @@ namespace PetPals_BackEnd_Group_9.Command
         public int SpeciesId { get; set; }
         public required string Description { get; set; }
         public decimal Price { get; set; }
+        public string? ImageUrl { get; set; }
         public int OwnerId { get; set; }
     }
 }

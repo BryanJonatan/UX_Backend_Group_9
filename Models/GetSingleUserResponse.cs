@@ -15,6 +15,6 @@ namespace PetPals_BackEnd_Group_9.Models
 
         public string Address { get; set; } 
 
-        public string Role { get; set; }
+        public Role Role { get; set; }
     }
 }

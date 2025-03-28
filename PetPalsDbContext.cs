@@ -104,6 +104,12 @@ namespace PetPals_BackEnd_Group_9
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Adoption>()
+                .HasOne(a => a.Owner)
+                .WithMany()
+                .HasForeignKey(a => a.OwnerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Adoption>()
                 .HasOne(a => a.Pet)
                 .WithMany()
                 .HasForeignKey(a => a.PetId)
@@ -128,11 +134,16 @@ namespace PetPals_BackEnd_Group_9
       .OnDelete(DeleteBehavior.Restrict); // ✅ Prevent cascade delete
 
             modelBuilder.Entity<ServiceTransaction>()
-                .HasOne(st => st.User)  // ✅ Reference to Adopter entity
+                .HasOne(st => st.Adopter)  // ✅ Reference to Adopter entity
                 .WithMany()                // ✅ An Adopter can have many transactions
                 .HasForeignKey(st => st.AdopterId)  // ✅ FK is AdopterId
                 .OnDelete(DeleteBehavior.Restrict); // ✅ Prevent cascade delete
 
+            modelBuilder.Entity<ServiceTransaction>()
+                .HasOne(st => st.Provider)  // ✅ Reference to Provider entity
+                .WithMany()                // ✅ A Provider can have many transactions
+                .HasForeignKey(st => st.ProviderId)  // ✅ FK is ProviderId
+                .OnDelete(DeleteBehavior.Restrict); // ✅ Prevent cascade delete
 
             modelBuilder.Entity<ServiceTransaction>()
             .Property(st => st.BookingDate)

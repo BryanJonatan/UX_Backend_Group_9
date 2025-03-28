@@ -19,7 +19,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
 
         public async Task<AdoptionTransactionResponse> Handle(AdoptionTransactionCommand command, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Processing adoption request for PetId: {PetId}, UserId: {UserId}", command.PetId, command.UserId);
+            _logger.LogInformation("Processing adoption request for PetId: {PetId}, AdopterId: {AdopterId}, OwnerId: {OwnerId}", command.PetId, command.AdopterId, command.OwnerId);
 
             var pet = await _context.Pets
                 .FirstOrDefaultAsync(p => p.PetId == command.PetId && p.Status == "Available", cancellationToken);
@@ -33,27 +33,28 @@ namespace PetPals_BackEnd_Group_9.Handlers
 
             var adoption = new Adoption
             {
-                AdopterId = command.UserId,
+                AdopterId = command.AdopterId,
+                OwnerId = command.OwnerId,
                 PetId = command.PetId,
                 Status = "approved",
                 CreatedAt = DateTimeOffset.UtcNow,
-                CreatedBy = command.UserId.ToString(),
+                CreatedBy = command.AdopterId.ToString(),
                 Price = pet.Price,
                 BookingDate = DateTimeOffset.UtcNow,
                 UpdatedAt = DateTimeOffset.UtcNow,
-                UpdatedBy = command.UserId.ToString(),
+                UpdatedBy = command.AdopterId.ToString(),
 
             };
 
             pet.Status = "Adopted";
             pet.UpdatedAt = DateTimeOffset.UtcNow;
-            pet.UpdatedBy = command.UserId.ToString();
+            pet.UpdatedBy = command.AdopterId.ToString();
 
 
             _context.Adoptions.Add(adoption);
             await _context.SaveChangesAsync(cancellationToken);
 
-            _logger.LogInformation("Pet {PetId} successfully adopted by User {UserId}.", pet.PetId, command.UserId);
+            _logger.LogInformation("Pet {PetId} successfully adopted by User {AdopterId}.", pet.PetId, command.AdopterId);
 
             return new AdoptionTransactionResponse
             {

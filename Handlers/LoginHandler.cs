@@ -43,7 +43,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
                     Password = user.Password,
                     Phone = user.Phone,
                     Address = user.Address,
-                    Role = user.Role.Name,
+                    Role = user.Role,
                 } 
             };
         }

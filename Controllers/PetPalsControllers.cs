@@ -317,7 +317,7 @@ namespace PetPals_BackEnd_Group_9.Controllers
 
             try
             {
-                var command = new AdoptionTransactionCommand(request.PetId, request.UserId);
+                var command = new AdoptionTransactionCommand(request.PetId, request.AdopterId, request.OwnerId);
                 var result = await _mediator.Send(command);
 
                 if (result.Success)
@@ -438,6 +438,54 @@ namespace PetPals_BackEnd_Group_9.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Unexpected error while fetching transaction history for AdopterId: {AdopterId}", adopterId);
+                return StatusCode((int)HttpStatusCode.InternalServerError, new ApiException(HttpStatusCode.InternalServerError, "Internal Server Error", ex.Message).ToProblemDetails(HttpContext));
+            }
+        }
+
+        [HttpGet("adoption-transaction-request/{ownerId}")]
+        public async Task<IActionResult> GetAdoptionTransactionRequest(int ownerId)
+        {
+            try
+            {
+                _logger.LogInformation("Processing adoption transaction request for OwnerId: {OwnerId}", ownerId);
+
+                var query = new AdoptionTransactionRequestQuery { OwnerId = ownerId };
+                var result = await _mediator.Send(query);
+
+                return Ok(result);
+            }
+            catch (ApiException ex)
+            {
+                _logger.LogWarning("Error fetching adoption transaction request for OwnerId: {OwnerId}: {Message}", ownerId, ex.Message);
+                return StatusCode((int)ex.StatusCode, ex.ToProblemDetails(HttpContext));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error while fetching adoption transaction request for OwnerId: {OwnerId}", ownerId);
+                return StatusCode((int)HttpStatusCode.InternalServerError, new ApiException(HttpStatusCode.InternalServerError, "Internal Server Error", ex.Message).ToProblemDetails(HttpContext));
+            }
+        }
+
+        [HttpGet("service-transaction-request/{providerId}")]
+        public async Task<IActionResult> GetServiceTransactionRequest(int providerId)
+        {
+            try
+            {
+                _logger.LogInformation("Processing service transaction request for ProviderId: {ProviderId}", providerId);
+
+                var query = new ServiceTransactionRequestQuery { ProviderId = providerId };
+                var result = await _mediator.Send(query);
+
+                return Ok(result);
+            }
+            catch (ApiException ex)
+            {
+                _logger.LogWarning("Error fetching service transaction request for ProviderId: {ProviderId}: {Message}", providerId, ex.Message);
+                return StatusCode((int)ex.StatusCode, ex.ToProblemDetails(HttpContext));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error while fetching service transaction request for ProviderId: {ProviderId}", providerId);
                 return StatusCode((int)HttpStatusCode.InternalServerError, new ApiException(HttpStatusCode.InternalServerError, "Internal Server Error", ex.Message).ToProblemDetails(HttpContext));
             }
         }

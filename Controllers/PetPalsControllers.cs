@@ -587,6 +587,14 @@ namespace PetPals_BackEnd_Group_9.Controllers
             var result = await _mediator.Send(command);
             return CreatedAtAction(nameof(AddPet), new { id = result.PetId }, result);
         }
+
+        [HttpPut("edit-pets")]
+        public async Task<ActionResult<PetResponse>> EditPet([FromBody] EditPetCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
         [HttpPost("input-new-services")]
         public async Task<IActionResult> AddService([FromBody] AddServiceCommand command)
         {

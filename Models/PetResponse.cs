@@ -12,5 +12,6 @@
         public string Status { get; set; } = "Available";
         public string Owner { get; set; } = string.Empty;
         public string Slug { get; set; } = string.Empty;
+        
     }
 }

@@ -9,7 +9,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
 {
     public class EditPetHandler : IRequestHandler<EditPetCommand, PetResponse>
     {
-        private readonly PetPalsDbContext _context
+        private readonly PetPalsDbContext _context;
 
         public EditPetHandler(PetPalsDbContext context)
         {
@@ -21,7 +21,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
             Log.Information("Edit Pet: New Name = {Name}", request.Name);
 
             var owner = await _context.Users.AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Id == request.OwnerId, cancellationToken);
+                .FirstOrDefaultAsync(u => u.UserId == request.OwnerId, cancellationToken);
             if (owner == null)
             {
                 Log.Warning("Owner with ID {OwnerId} not found", request.OwnerId);
@@ -35,8 +35,16 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 throw new KeyNotFoundException($"Pet with ID {request.PetId} not found");
             }
 
+            var species = await _context.Species.AsNoTracking()
+                .FirstOrDefaultAsync(s => s.SpeciesId == request.SpeciesId, cancellationToken);
+            if (species == null)
+            {
+                Log.Warning("Species with ID {SpeciesId} not found", request.SpeciesId);
+                throw new KeyNotFoundException($"Species with ID {request.SpeciesId} not found");
+            }
+
             pet.Name = request.Name;
-            pet.Slug = request.Name.ToLower().Replace(" ", "-"),
+            pet.Slug = request.Name.ToLower().Replace(" ", "-");
             pet.Breed = request.Breed;
             pet.Age = request.Age;
             pet.SpeciesId = request.SpeciesId;

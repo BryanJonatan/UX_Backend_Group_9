@@ -649,6 +649,28 @@ namespace PetPals_BackEnd_Group_9.Controllers
             var comments = await _mediator.Send(query);
             return Ok(comments);
         }
+
+        [HttpGet("get-owner-pets/{ownerId}")]
+        public async Task<IActionResult> GetOwnerPets(int ownerId)
+        {
+            var query = new GetOwnerPetsQuery(ownerId);
+            var validator = new GetOwnerPetsValidator();
+            var validationResult = validator.Validate(query);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(new ProblemDetails
+                {
+                    Title = "Validation Error",
+                    Status = 400,
+                    Detail = string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage))
+                });
+            }
+
+            var pets = await _mediator.Send(query);
+            return Ok(pets);
+        }
+
     }
 
 }

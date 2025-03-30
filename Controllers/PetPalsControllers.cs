@@ -588,8 +588,8 @@ namespace PetPals_BackEnd_Group_9.Controllers
             return CreatedAtAction(nameof(AddPet), new { id = result.PetId }, result);
         }
 
-        [HttpPut("edit-pets")]
-        public async Task<ActionResult<PetResponse>> EditPet([FromBody] EditPetCommand command)
+        [HttpPut("edit-pet/{petId}")]
+        public async Task<ActionResult<PetResponse>> EditPet(int petId, [FromBody] EditPetCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);
@@ -608,6 +608,7 @@ namespace PetPals_BackEnd_Group_9.Controllers
             var result = await _mediator.Send(command);
             return CreatedAtAction(nameof(AddService), new { id = result.ServiceId }, result);
         }
+
         //[HttpGet("get-all-forum-comments")]
         //public async Task<IActionResult> GetAllForumComments([FromQuery] int? userId, [FromQuery] int? commentId)
         //{

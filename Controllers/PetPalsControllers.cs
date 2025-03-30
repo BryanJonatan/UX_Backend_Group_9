@@ -588,11 +588,15 @@ namespace PetPals_BackEnd_Group_9.Controllers
             return CreatedAtAction(nameof(AddPet), new { id = result.PetId }, result);
         }
 
-        [HttpPut("edit-pet/{petId}")]
-        public async Task<ActionResult<PetResponse>> EditPet(int petId, [FromBody] EditPetCommand command)
+        [HttpPut("edit-pets/{petId}")]
+        public async Task<IActionResult> Edit([FromBody] EditPetsCommand command)
         {
             var result = await _mediator.Send(command);
-            return Ok(result);
+            if (result.Status == HttpStatusCode.OK)
+            {
+                return Ok(new { status = result.Status, title = result.Title, detail = result.Detail });
+            }
+            return Problem(statusCode: (int)result.Status, title: result.Title, detail: result.Detail);
         }
 
         [HttpPost("input-new-services")]

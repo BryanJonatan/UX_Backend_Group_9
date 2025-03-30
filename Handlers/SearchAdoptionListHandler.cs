@@ -61,6 +61,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
                     Slug = p.Slug,
                     Breed = p.Breed,
                     Age = p.Age,
+                    Gender = p.Gender,
                     Species = p.Species.Name ?? "Unknown",
                     Price = p.Price,
                     Status = p.Status

@@ -10,6 +10,7 @@ namespace PetPals_BackEnd_Group_9.Models
         public required string Slug { get; set; }
         public required string Breed { get; set; }
         public int Age { get; set; }
+        public string Gender { get; set; }
         public required string Species { get; set; }
         public decimal Price { get; set; }
         public required string Status { get; set; }

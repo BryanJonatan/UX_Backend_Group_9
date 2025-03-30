@@ -588,7 +588,7 @@ namespace PetPals_BackEnd_Group_9.Controllers
             return CreatedAtAction(nameof(AddPet), new { id = result.PetId }, result);
         }
 
-        [HttpPut("edit-pets/{petId}")]
+        [HttpPut("edit-pet/{petId}")]
         public async Task<IActionResult> Edit([FromBody] EditPetsCommand command)
         {
             var result = await _mediator.Send(command);
@@ -611,6 +611,14 @@ namespace PetPals_BackEnd_Group_9.Controllers
 
             var result = await _mediator.Send(command);
             return CreatedAtAction(nameof(AddService), new { id = result.ServiceId }, result);
+        }
+
+        [HttpPut("edit-service/{serviceId}")]
+        public async Task<IActionResult> EditService(int serviceId, [FromBody] EditServiceCommand command)
+        {
+            command.ServiceId = serviceId;
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
 
         //[HttpGet("get-all-forum-comments")]
@@ -671,14 +679,26 @@ namespace PetPals_BackEnd_Group_9.Controllers
             return Ok(pets);
         }
 
-        [HttpPut("service-provider/{serviceId}")]
-        public async Task<IActionResult> EditService(int serviceId, [FromBody] EditServiceCommand command)
+        [HttpGet("get-provider-services/{providerId}")]
+        public async Task<IActionResult> GetProviderServices(int providerId)
         {
-            command.ServiceId = serviceId;
-            var result = await _mediator.Send(command);
-            return Ok(result);
-        }
+            var query = new GetProviderServicesQuery(providerId);
+            var validator = new GetProviderServicesValidator();
+            var validationResult = validator.Validate(query);
 
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(new ProblemDetails
+                {
+                    Title = "Validation Error",
+                    Status = 400,
+                    Detail = string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage))
+                });
+            }
+
+            var services = await _mediator.Send(query);
+            return Ok(services);
+        }
 
 
     }

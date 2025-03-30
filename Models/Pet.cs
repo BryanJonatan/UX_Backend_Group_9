@@ -19,6 +19,8 @@ namespace PetPals_BackEnd_Group_9.Models
 
         [Column("age")]
         public int Age { get; set; }
+        [Column("gender")]
+        public string Gender { get; set; }
 
         [Column("species_id")]
         public int SpeciesId { get; set; }

@@ -38,6 +38,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 Name = request.Name,
                 Breed = request.Breed,
                 Age = request.Age,
+                Gender = request.Gender,
                 SpeciesId = request.SpeciesId,
                 Species = species,
                 Description = request.Description,

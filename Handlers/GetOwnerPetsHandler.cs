@@ -24,8 +24,10 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 {
                     PetId = p.PetId,
                     Name = p.Name,
+                    Slug = p.Slug,
                     Breed = p.Breed,
                     Age = p.Age,
+                    Gender = p.Gender,
                     Description = p.Description,
                     Status = p.Status,
                     Price = p.Price,
@@ -37,7 +39,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
             if (ownerPets == null)
             {
                 Log.Information("Owner pets not found: {OwnerId}", request.ownerId);
-                throw new NotFoundException($"Pets from owner whit id '{request.ownerId}' not found.");
+                throw new NotFoundException($"Pets from owner with id '{request.ownerId}' not found.");
             }
 
             return ownerPets;

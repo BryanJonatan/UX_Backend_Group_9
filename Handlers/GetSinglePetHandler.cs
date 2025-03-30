@@ -26,6 +26,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
                     Name = p.Name,
                     Breed = p.Breed,
                     Age = p.Age,
+                    Gender = p.Gender,
                     Description = p.Description,
                     Status = p.Status,
                     Price = p.Price,

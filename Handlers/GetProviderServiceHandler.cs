@@ -23,6 +23,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 {
                     ServiceId = s.ServiceId,
                     Name = s.Name,
+                    Slug = s.Slug,
                     Category = s.Category.Name,
                     Price = s.Price,
                     Address = s.Address,

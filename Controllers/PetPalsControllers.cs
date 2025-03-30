@@ -671,6 +671,28 @@ namespace PetPals_BackEnd_Group_9.Controllers
             return Ok(pets);
         }
 
+        [HttpGet("service-provider/{providerId}")]
+        public async Task<IActionResult> GetProviderServices(int providerId)
+        {
+            var query = new GetProviderServiceQuery { ProviderId = providerId };
+            var validator = new GetProviderServiceValidator();
+            var validationResult = await validator.ValidateAsync(query);
+
+            if (!validationResult.IsValid)
+            {
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Title = "Validation Error",
+                    Detail = validationResult.Errors.FirstOrDefault()?.ErrorMessage
+                };
+                return BadRequest(problemDetails);
+            }
+
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
     }
 
 }

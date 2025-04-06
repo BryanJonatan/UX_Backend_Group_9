@@ -7,7 +7,7 @@ namespace PetPals_BackEnd_Group_9.Command
     {
         public required string Name { get; set; }
         public required string Breed { get; set; }
-        public int Age { get; set; }
+        public decimal Age { get; set; }
         public string Gender { get; set; }
         public int SpeciesId { get; set; }
         public required string Description { get; set; }

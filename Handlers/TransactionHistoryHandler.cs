@@ -28,6 +28,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 .Include(a => a.Pet.Species)
                 .Select(a => new TransactionHistoryDto
                 {
+                    TransactionId = a.AdoptionId,
                     TransactionType = "Adoption",
                     BookingDate = (DateTimeOffset)a.BookingDate,
                     Price = a.Pet != null ? a.Pet.Price : 0,
@@ -43,6 +44,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 .Include(st => st.Service.Category)
                 .Select(st => new TransactionHistoryDto
                 {
+                    TransactionId = st.TransactionId,
                     TransactionType = "Service",
                     BookingDate = st.BookingDate,
                     Price = st.Service != null ? st.Service.Price : 0,

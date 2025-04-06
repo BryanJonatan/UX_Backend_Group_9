@@ -43,7 +43,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 Species = species,
                 Description = request.Description,
                 Price = request.Price,
-                Status = "Available",
+                Status = "available",
                 OwnerId = request.OwnerId,
                 Owner = owner,
                 Slug = request.Name.ToLower().Replace(" ", "-"),

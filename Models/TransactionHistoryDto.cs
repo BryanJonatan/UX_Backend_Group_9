@@ -2,6 +2,7 @@
 {
     public class TransactionHistoryDto
     {
+        public int TransactionId { get; set; }
         public string TransactionType { get; set; }
         public DateTimeOffset BookingDate { get; set; }
         public decimal? Price { get; set; }

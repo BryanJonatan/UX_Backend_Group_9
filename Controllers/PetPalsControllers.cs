@@ -442,6 +442,81 @@ namespace PetPals_BackEnd_Group_9.Controllers
             }
         }
 
+        [HttpGet("adoption-transaction-detail/{adoptionId}")]
+        public async Task<IActionResult> GetSingleAdoptionTransaction(int adoptionId)
+        {
+            try
+            {
+                var query = new GetSingleAdoptionTransactionQuery(adoptionId);
+                var post = await _mediator.Send(query);
+
+                if (post == null)
+                {
+                    return NotFound(new
+                    {
+                        type = "https://tools.ietf.org/html/rfc7807",
+                        title = "Not Found",
+                        status = 404,
+                        detail = $"Adoption transaction with id '{adoptionId}' not found.",
+                        instance = HttpContext.Request.Path
+                    });
+                }
+
+                return Ok(post);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error retrieving adoption transaction with id {AdoptionId}", adoptionId);
+
+                return StatusCode(500, new
+                {
+                    type = "https://tools.ietf.org/html/rfc7807",
+                    title = "Internal Server Error",
+                    status = 500,
+                    detail = "An unexpected error occurred while retrieving the adoption transaction.",
+                    instance = HttpContext.Request.Path
+                });
+            }
+        }
+
+
+        [HttpGet("service-transaction-detail/{transactionId}")]
+        public async Task<IActionResult> GetSingleServiceTransaction(int transactionId)
+        {
+            try
+            {
+                var query = new GetSingleServiceTransactionQuery(transactionId);
+                var post = await _mediator.Send(query);
+
+                if (post == null)
+                {
+                    return NotFound(new
+                    {
+                        type = "https://tools.ietf.org/html/rfc7807",
+                        title = "Not Found",
+                        status = 404,
+                        detail = $"Service transaction with id '{transactionId}' not found.",
+                        instance = HttpContext.Request.Path
+                    });
+                }
+
+                return Ok(post);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error retrieving service transaction with id {TransactionId}", transactionId);
+
+                return StatusCode(500, new
+                {
+                    type = "https://tools.ietf.org/html/rfc7807",
+                    title = "Internal Server Error",
+                    status = 500,
+                    detail = "An unexpected error occurred while retrieving the service transaction.",
+                    instance = HttpContext.Request.Path
+                });
+            }
+        }
+
         [HttpGet("adoption-transaction-request/{ownerId}")]
         public async Task<IActionResult> GetAdoptionTransactionRequest(int ownerId)
         {
@@ -599,6 +674,18 @@ namespace PetPals_BackEnd_Group_9.Controllers
             return Problem(statusCode: (int)result.Status, title: result.Title, detail: result.Detail);
         }
 
+        [HttpDelete("remove-pet/{petId}")]
+        public async Task<IActionResult> RemovePet(int petId)
+        {
+            var query = new DeletePetQuery(petId);
+            var result = await _mediator.Send(query);
+            if (result.Status == HttpStatusCode.OK)
+            {
+                return Ok(new { status = result.Status, title = result.Title, detail = result.Detail });
+            }
+            return Problem(statusCode: (int)result.Status, title: result.Title, detail: result.Detail);
+        }
+
         [HttpPost("input-new-services")]
         public async Task<IActionResult> AddService([FromBody] AddServiceCommand command)
         {
@@ -619,6 +706,18 @@ namespace PetPals_BackEnd_Group_9.Controllers
             command.ServiceId = serviceId;
             var result = await _mediator.Send(command);
             return Ok(result);
+        }
+
+        [HttpDelete("remove-service/{serviceId}")]
+        public async Task<IActionResult> RemoveService(int serviceId)
+        {
+            var query = new DeleteServiceQuery(serviceId);
+            var result = await _mediator.Send(query);
+            if (result.Status == HttpStatusCode.OK)
+            {
+                return Ok(new { status = result.Status, title = result.Title, detail = result.Detail });
+            }
+            return Problem(statusCode: (int)result.Status, title: result.Title, detail: result.Detail);
         }
 
         //[HttpGet("get-all-forum-comments")]

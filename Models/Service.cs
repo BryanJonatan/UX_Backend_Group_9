@@ -29,8 +29,11 @@ public class Service
 
     [Column("city")]
     public string? City { get; set; }
+    [Column("status")]
+    public string Status { get; set; }
+    [Column("is_removed")]
+    public bool IsRemoved { get; set; } = false;
 
-   
     public virtual User Provider { get; set; }
     public virtual ServiceCategory Category { get; set; }
 

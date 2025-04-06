@@ -19,7 +19,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
             var providerServices = await _context.Services
                 .Include(s => s.Provider)
                 .Include(s => s.Category)
-                .Where(s => s.ProviderId == request.providerId)
+                .Where(s => s.ProviderId == request.providerId && !s.IsRemoved)
                 .Select(s => new GetProviderServicesResponse
                 {
                     ServiceId = s.ServiceId,
@@ -29,6 +29,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
                     Price = s.Price,
                     Address = s.Address,
                     City = s.City,
+                    Status = s.Status,
                     Provider = s.Provider,
                     Category = s.Category,
                 }).ToListAsync(cancellationToken);

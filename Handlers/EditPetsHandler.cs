@@ -5,6 +5,8 @@ using System.Net;
 using System;
 using PetPals_BackEnd_Group_9;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using PetPals_BackEnd_Group_9.Validators;
 
 public class EditPetsHandler : IRequestHandler<EditPetsCommand, EditPetsResult>
 {

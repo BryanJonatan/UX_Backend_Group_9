@@ -18,6 +18,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
             var query = _context.Services
                 .Include(s => s.Provider)
                 .Include(s => s.Category)
+                .Where(s => !s.IsRemoved)
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(request.Name) || !string.IsNullOrEmpty(request.City))
@@ -44,19 +45,20 @@ namespace PetPals_BackEnd_Group_9.Handlers
             }
 
             return await query
-    .Select(s => new ServiceDto
-    {
-        ServiceId = s.ServiceId,
-        Name = s.Name,
-        Slug = s.Slug,
-        CategoryName = s.Category != null ? s.Category.Name : "Unknown",  // Prevent null reference
-        ProviderName = s.Provider != null ? s.Provider.Name : "Unknown",  // Prevent null reference
-        Description = s.Description ?? "No description",
-        Price = s.Price,
-        Address = s.Address ?? "No address",
-        City = s.City ?? "No city"
-    })
-    .ToListAsync(cancellationToken);
+                .Select(s => new ServiceDto
+                {
+                    ServiceId = s.ServiceId,
+                    Name = s.Name,
+                    Slug = s.Slug,
+                    Description = s.Description ?? "No description",
+                    Price = s.Price,
+                    Address = s.Address ?? "No address",
+                    City = s.City ?? "No city",
+                    Status = s.Status,
+                    Provider = s.Provider,
+                    Category = s.Category,
+                })
+                .ToListAsync(cancellationToken);
 
         }
     }

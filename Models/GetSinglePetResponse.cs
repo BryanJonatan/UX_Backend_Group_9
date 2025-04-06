@@ -5,7 +5,7 @@
         public int PetId { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Breed { get; set; } = String.Empty;
-        public int Age { get; set; }
+        public decimal Age { get; set; }
         public string Gender { get; set; } = String.Empty;
         public string Description { get; set; } = String.Empty ;
         public string Status { get; set; } = String.Empty;

@@ -39,6 +39,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 Price = request.Price,
                 Address = request.Address,
                 City = request.City,
+                Status = "available",
                 CreatedBy = request.CreatedBy,
                 CreatedAt = DateTimeOffset.UtcNow,
                 UpdatedBy = request.CreatedBy,

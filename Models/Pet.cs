@@ -18,7 +18,7 @@ namespace PetPals_BackEnd_Group_9.Models
         public required string Breed { get; set; }
 
         [Column("age")]
-        public int Age { get; set; }
+        public decimal Age { get; set; }
         [Column("gender")]
         public string Gender { get; set; }
 
@@ -36,6 +36,8 @@ namespace PetPals_BackEnd_Group_9.Models
 
         [Required, Column("status")]
         public required string Status { get; set; }
+        [Column("is_removed")]
+        public bool IsRemoved { get; set; } = false;
 
         [Column("owner_id")]
         public int OwnerId { get; set; }

@@ -17,7 +17,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
         {
             var query = _context.Pets
                 .Include(p => p.Species)
-                .Where(p => p.Status == "available");
+                .Where(p => !p.IsRemoved);
 
             if (!string.IsNullOrEmpty(request.Name) || !string.IsNullOrEmpty(request.Breed))
             {

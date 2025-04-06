@@ -19,7 +19,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
             var ownerPets = await _context.Pets
                 .Include(p => p.Owner)
                 .Include(p => p.Species)
-                .Where(p => p.OwnerId == request.ownerId)
+                .Where(p => p.OwnerId == request.ownerId && !p.IsRemoved)
                 .Select(p => new GetOwnerPetsResponse
                 {
                     PetId = p.PetId,

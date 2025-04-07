@@ -23,7 +23,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
 
                 if (request.CategoryId.HasValue)
                 {
-                    query = query.Where(sc => sc.CategoryId == request.CategoryId);
+                    query = query.Where(sc => sc.Id == request.CategoryId);
                 }
 
                 if (!string.IsNullOrWhiteSpace(request.Name))
@@ -34,7 +34,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 var categories = await query
                     .Select(sc => new ServiceCategoryDto
                     {
-                        CategoryId = sc.CategoryId,
+                        Id = sc.Id,
                         Name = sc.Name
                     })
                     .ToListAsync(cancellationToken);

@@ -3,10 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using PetPals_BackEnd_Group_9;
 using PetPals_BackEnd_Group_9.Command;
 using PetPals_BackEnd_Group_9.Handlers;
+using PetPals_BackEnd_Group_9.Helpers;
 using PetPals_BackEnd_Group_9.Models;
 using System.Net;
 
-public class EditServiceHandler : IRequestHandler<EditServiceCommand, EditServiceResponse>
+public class EditServiceHandler : IRequestHandler<EditServiceCommand, EditServiceResult>
 {
     private readonly PetPalsDbContext _context;
     private readonly ILogger<EditServiceHandler> _logger;
@@ -17,7 +18,7 @@ public class EditServiceHandler : IRequestHandler<EditServiceCommand, EditServic
         _logger = logger;
     }
 
-    public async Task<EditServiceResponse> Handle(EditServiceCommand request, CancellationToken cancellationToken)
+    public async Task<EditServiceResult> Handle(EditServiceCommand request, CancellationToken cancellationToken)
     {
         var service = await _context.Services.Include(s => s.Provider).Include(s => s.Category)
             .FirstOrDefaultAsync(s => s.ServiceId == request.ServiceId, cancellationToken);
@@ -46,27 +47,11 @@ public class EditServiceHandler : IRequestHandler<EditServiceCommand, EditServic
         service.UpdatedAt = DateTimeOffset.UtcNow;
         service.UpdatedBy = service.Provider.Name; // Automatically set UpdatedBy to Provider Name
         service.CreatedBy = service.Provider.Name; // Automatically set CreatedBy to Provider Name
-        service.Slug = GenerateSlug(service.Name); // Update Slug based on Name
+        service.Slug = await SlugHelper.GenerateUniqueSlugAsync(request.Name, _context.Services);
 
         await _context.SaveChangesAsync(cancellationToken);
-
         _logger.LogInformation("Service {ServiceId} updated successfully by Provider {UpdatedBy}", service.ServiceId, service.UpdatedBy);
 
-        return new EditServiceResponse
-        {
-            ServiceId = service.ServiceId,
-            Name = service.Name,
-            Category = service.Category.Name,
-            Price = service.Price,
-            Address = service.Address,
-            City = service.City,
-            UpdatedAt = service.UpdatedAt,
-            Slug = service.Slug
-        };
-    }
-
-    private string GenerateSlug(string name)
-    {
-        return name.ToLower().Replace(" ", "-").Replace(".", "");
+        return EditServiceResult.Success();
     }
 }

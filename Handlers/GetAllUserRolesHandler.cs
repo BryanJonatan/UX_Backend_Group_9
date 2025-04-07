@@ -23,7 +23,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
 
             if (request.RoleId.HasValue)
             {
-                query = query.Where(r => r.RoleId == request.RoleId);
+                query = query.Where(r => r.Id == request.RoleId);
             }
 
             if (!string.IsNullOrWhiteSpace(request.Name))
@@ -34,7 +34,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
             var roles = await query
                 .Select(r => new UserRoleDto
                 {
-                    RoleId = r.RoleId,
+                    Id = r.Id,
                     Name = r.Name
                 })
                 .ToListAsync(cancellationToken);

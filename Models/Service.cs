@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 [Table("services")]
-public class Service
+public class Service : ISluggable
 {
     [Key]
     [Column("service_id")] 
@@ -25,10 +25,10 @@ public class Service
     public decimal Price { get; set; }
 
     [Column("address")]
-    public string? Address { get; set; }
+    public string Address { get; set; }
 
     [Column("city")]
-    public string? City { get; set; }
+    public string City { get; set; }
 
     [Column("status")]
     public string Status { get; set; }

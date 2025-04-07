@@ -42,7 +42,7 @@ namespace PetPals_BackEnd_Group_9
 
             modelBuilder.Entity<Role>(entity =>
             {
-                entity.HasKey(e => e.RoleId);
+                entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.Name).IsUnique();
             });
 
@@ -54,7 +54,7 @@ namespace PetPals_BackEnd_Group_9
 
             modelBuilder.Entity<Species>()
            .ToTable("species")
-           .Property(s => s.SpeciesId)
+           .Property(s => s.Id)
            .HasColumnName("species_id");
 
             //modelBuilder.Entity<Pet>(entity =>
@@ -224,7 +224,7 @@ namespace PetPals_BackEnd_Group_9
 
             modelBuilder.Entity<ServiceCategory>()
        .ToTable("service_categories")  
-       .Property(s => s.CategoryId)
+       .Property(s => s.Id)
        .HasColumnName("category_id");  
 
             modelBuilder.Entity<ServiceCategory>()

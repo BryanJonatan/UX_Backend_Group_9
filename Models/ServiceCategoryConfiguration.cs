@@ -9,7 +9,7 @@ namespace PetPals_BackEnd_Group_9.Models
         {
             builder.ToTable("service_categories");
 
-            builder.Property(s => s.CategoryId)
+            builder.Property(s => s.Id)
                 .HasColumnName("category_id"); 
 
             builder.Property(s => s.Name)

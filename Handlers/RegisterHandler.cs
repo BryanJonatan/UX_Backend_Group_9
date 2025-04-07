@@ -31,7 +31,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
             }
 
             // Validate role existence
-            var role = await _dbContext.Roles.FirstOrDefaultAsync(r => r.RoleId == request.RoleId, cancellationToken);
+            var role = await _dbContext.Roles.FirstOrDefaultAsync(r => r.Id == request.RoleId, cancellationToken);
 
             if (role == null)
             {

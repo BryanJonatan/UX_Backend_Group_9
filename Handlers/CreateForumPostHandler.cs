@@ -1,7 +1,10 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using PetPals_BackEnd_Group_9.Command;
+using PetPals_BackEnd_Group_9.Helpers;
 using PetPals_BackEnd_Group_9.Models;
 using PetPals_BackEnd_Group_9.Validators;
+using Serilog;
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,12 +13,14 @@ namespace PetPals_BackEnd_Group_9.Handlers
 {
     public class CreateForumPostHandler : IRequestHandler<CreateForumPostCommand, ForumPostResponse>
     {
+        private readonly PetPalsDbContext _context;
         private readonly IForumPostRepository _repository;
         private readonly IUserRepository _userRepository;
         private readonly IForumCategoryRepository _categoryRepository;
 
-        public CreateForumPostHandler(IForumPostRepository repository, IUserRepository userRepository, IForumCategoryRepository categoryRepository)
+        public CreateForumPostHandler(PetPalsDbContext context, IForumPostRepository repository, IUserRepository userRepository, IForumCategoryRepository categoryRepository)
         {
+            _context = context;
             _repository = repository;
             _userRepository = userRepository;
             _categoryRepository = categoryRepository;
@@ -23,20 +28,21 @@ namespace PetPals_BackEnd_Group_9.Handlers
 
         public async Task<ForumPostResponse> Handle(CreateForumPostCommand request, CancellationToken cancellationToken)
         {
+            Log.Information("Adding new forum post: Title = {Title}, Content = {Content}", request.Title, request.Content);
+
             var user = await _userRepository.GetByIdAsync(request.UserId);
             if (user == null)
             {
+                Log.Warning("User with ID {UserId} not found", request.UserId);
                 throw new Exception("User not found");
             }
 
             var category = await _categoryRepository.GetByIdAsync(request.ForumCategoryId);
             if (category == null)
             {
+                Log.Warning("Forum Category with ID {ForumCategoryId} not found", request.ForumCategoryId);
                 throw new Exception("Category not found");
             }
-
-            // ✅ Generate slug from title
-            string slug = GenerateSlug(request.Title);
 
             var forumPost = new ForumPost
             {
@@ -48,11 +54,13 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 CreatedBy = user.Name,
                 UpdatedAt = DateTimeOffset.UtcNow,
                 UpdatedBy = user.Name,
-                Slug = slug // ✅ Assign generated slug
+                Slug = await SlugHelper.GenerateUniqueSlugAsync(request.Title, _context.ForumPosts),
             };
 
             await _repository.AddAsync(forumPost);
+            await _context.SaveChangesAsync(cancellationToken);
 
+            Log.Information("Forum with title {PostTitle} added successfully by {UserName}", request.Title, user.Name);
             return new ForumPostResponse
             {
                 ForumPostId = forumPost.ForumPostId,
@@ -67,23 +75,6 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 UpdatedBy = forumPost.UpdatedBy,
                 Slug = forumPost.Slug // ✅ Include in response
             };
-        }
-
-        // ✅ Helper function to generate slug from title
-        private string GenerateSlug(string title)
-        {
-            if (string.IsNullOrWhiteSpace(title)) return string.Empty;
-
-            // Konversi ke huruf kecil
-            title = title.ToLower().Trim();
-
-            // Hapus karakter khusus kecuali spasi dan tanda hubung
-            title = Regex.Replace(title, @"[^\w\s-]", "");
-
-            // Ganti spasi dan multiple tanda hubung dengan "-"
-            title = Regex.Replace(title, @"\s+", "-");
-
-            return title;
         }
     }
 }

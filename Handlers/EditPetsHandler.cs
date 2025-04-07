@@ -7,6 +7,7 @@ using PetPals_BackEnd_Group_9;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using PetPals_BackEnd_Group_9.Validators;
+using PetPals_BackEnd_Group_9.Helpers;
 
 public class EditPetsHandler : IRequestHandler<EditPetsCommand, EditPetsResult>
 {
@@ -22,6 +23,7 @@ public class EditPetsHandler : IRequestHandler<EditPetsCommand, EditPetsResult>
     public async Task<EditPetsResult> Handle(EditPetsCommand request, CancellationToken cancellationToken)
     {
         var pet = await _context.Pets.FirstOrDefaultAsync(x => x.PetId == request.PetId, cancellationToken);
+        
         if (pet == null)
         {
             _logger.LogWarning("Pet {PetId} not found", request.PetId);
@@ -35,6 +37,7 @@ public class EditPetsHandler : IRequestHandler<EditPetsCommand, EditPetsResult>
         pet.Price = request.Price;
         pet.UpdatedAt = DateTimeOffset.UtcNow;
         pet.UpdatedBy = "System"; // Replace with actual user context
+        pet.Slug = await SlugHelper.GenerateUniqueSlugAsync(request.Name, _context.Pets);
 
         await _context.SaveChangesAsync(cancellationToken);
         _logger.LogInformation("Pet {PetId} updated successfully", pet.PetId);

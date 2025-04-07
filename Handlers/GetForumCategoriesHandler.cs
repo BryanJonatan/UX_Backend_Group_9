@@ -22,12 +22,12 @@ namespace PetPals_BackEnd_Group_9.Handlers
 
             if (request.ForumCategoryId.HasValue)
             {
-                query = query.Where(fc => fc.ForumCategoryId == request.ForumCategoryId.Value);
+                query = query.Where(fc => fc.Id == request.ForumCategoryId.Value);
             }
 
             var categories = await query
                 .Select(fc => new ForumCategoryResponse(
-                    fc.ForumCategoryId,
+                    fc.Id,
                     fc.CategoryName // ✅ Use `CategoryName` instead of `Name`
                 ))
                 .ToListAsync(cancellationToken);

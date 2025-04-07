@@ -8,7 +8,7 @@ namespace PetPals_BackEnd_Group_9.Models
     {
         [Key]
         [Column("category_id")]
-        public int CategoryId { get; set; }
+        public int Id { get; set; }
 
         [Column("name")]
         public string Name { get; set; }

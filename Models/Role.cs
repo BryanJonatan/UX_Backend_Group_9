@@ -7,7 +7,7 @@ namespace PetPals_BackEnd_Group_9.Models
     {
         [Key]
         [Column("role_id")]
-        public int RoleId { get; set; }
+        public int Id { get; set; }
 
         [Required, MaxLength(20)]
         public string Name { get; set; } = string.Empty;

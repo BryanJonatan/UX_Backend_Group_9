@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PetPals_BackEnd_Group_9.Models
 {
     [Table("forum_posts")]
-    public class ForumPost
+    public class ForumPost : ISluggable
     {
         [Column("forum_post_id")]
         public int ForumPostId { get; set; }

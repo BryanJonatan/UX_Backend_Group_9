@@ -3,15 +3,15 @@ using PetPals_BackEnd_Group_9.Models;
 
 namespace PetPals_BackEnd_Group_9.Command
 {
-    public class AddPetCommand : IRequest<PetResponse>
+    public class AddPetCommand : IRequest<Pet>
     {
-        public required string Name { get; set; }
-        public required string Breed { get; set; }
-        public decimal Age { get; set; }
-        public string Gender { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Breed { get; set; } = string.Empty;
+        public decimal Age { get; set; } = decimal.Zero;
+        public string Gender { get; set; } = string.Empty;
         public int SpeciesId { get; set; }
-        public required string Description { get; set; }
-        public decimal Price { get; set; }
+        public string? Description { get; set; }
+        public decimal Price { get; set; } = decimal.Zero;
         public string? ImageUrl { get; set; }
         public int OwnerId { get; set; }
     }

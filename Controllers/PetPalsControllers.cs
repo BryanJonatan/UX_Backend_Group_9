@@ -568,16 +568,12 @@ namespace PetPals_BackEnd_Group_9.Controllers
         [HttpPost("forum-post")]
         public async Task<IActionResult> CreateForumPost([FromBody] CreateForumPostCommand command)
         {
-            var validationResult = new CreateForumPostValidator().Validate(command);
+            var validator = new CreateForumPostValidator();
+            var validationResult =await validator.ValidateAsync(command);
+
             if (!validationResult.IsValid)
             {
-                return BadRequest(new
-                {
-                    type = "https://tools.ietf.org/html/rfc7807",
-                    title = "Validation Error",
-                    status = 400,
-                    errors = validationResult.Errors.Select(e => e.ErrorMessage)
-                });
+                return BadRequest(new { errors = validationResult.Errors });
             }
 
             var result = await _mediator.Send(command);
@@ -657,16 +653,33 @@ namespace PetPals_BackEnd_Group_9.Controllers
         }
 
         [HttpPost("input-new-pets")]
-        public async Task<ActionResult<PetResponse>> AddPet([FromBody] AddPetCommand command)
+        public async Task<IActionResult> AddPet([FromBody] AddPetCommand command)
         {
+            var validator = new AddPetCommandValidator();
+            var validationResult = await validator.ValidateAsync(command);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(new { errors = validationResult.Errors });
+            }
+
             var result = await _mediator.Send(command);
             return CreatedAtAction(nameof(AddPet), new { id = result.PetId }, result);
         }
 
         [HttpPut("edit-pet/{petId}")]
-        public async Task<IActionResult> Edit([FromBody] EditPetsCommand command)
+        public async Task<IActionResult> EditPet([FromBody] EditPetsCommand command)
         {
+            var validator = new EditPetCommandValidator();
+            var validationResult = await validator.ValidateAsync(command);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(new { errors = validationResult.Errors });
+            }
+
             var result = await _mediator.Send(command);
+
             if (result.Status == HttpStatusCode.OK)
             {
                 return Ok(new { status = result.Status, title = result.Title, detail = result.Detail });
@@ -701,11 +714,23 @@ namespace PetPals_BackEnd_Group_9.Controllers
         }
 
         [HttpPut("edit-service/{serviceId}")]
-        public async Task<IActionResult> EditService(int serviceId, [FromBody] EditServiceCommand command)
+        public async Task<IActionResult> EditService([FromBody] EditServiceCommand command)
         {
-            command.ServiceId = serviceId;
+            var validator = new EditServiceCommandValidator();
+            var validationResult = await validator.ValidateAsync(command);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(new { errors = validationResult.Errors });
+            }
+
             var result = await _mediator.Send(command);
-            return Ok(result);
+
+            if (result.Status == HttpStatusCode.OK)
+            {
+                return Ok(new { status = result.Status, title = result.Title, detail = result.Detail });
+            }
+            return Problem(statusCode: (int)result.Status, title: result.Title, detail: result.Detail);
         }
 
         [HttpDelete("remove-service/{serviceId}")]

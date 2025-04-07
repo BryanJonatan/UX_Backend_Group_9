@@ -3,9 +3,9 @@ using PetPals_BackEnd_Group_9.Command;
 
 namespace PetPals_BackEnd_Group_9.Validators
 {
-    public class AddPetCommandValidator : AbstractValidator<AddPetCommand>
+    public class EditPetCommandValidator : AbstractValidator<EditPetsCommand>
     {
-        public AddPetCommandValidator()
+        public EditPetCommandValidator() 
         {
             // Name
             RuleFor(p => p.Name)
@@ -15,11 +15,11 @@ namespace PetPals_BackEnd_Group_9.Validators
             // Breed
             RuleFor(p => p.Breed)
                 .NotEmpty().WithMessage("Breed is required.");
-            
+
             // Species
             RuleFor(p => p.SpeciesId)
                 .GreaterThan(0).WithMessage("Species is required.");
-            
+
             // Age
             RuleFor(p => p.Age)
                 .NotEmpty().WithMessage("Age is required.")
@@ -33,10 +33,6 @@ namespace PetPals_BackEnd_Group_9.Validators
             RuleFor(p => p.Price)
                 .NotEmpty().WithMessage("Price is required.")
                 .GreaterThan(0).WithMessage("Price must be a non-negative number.");
-            
-            // Owner Id
-            RuleFor(p => p.OwnerId)
-                .GreaterThan(0).WithMessage("Invalid owner ID.");
         }
     }
 }

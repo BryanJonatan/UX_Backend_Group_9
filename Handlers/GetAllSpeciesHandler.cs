@@ -24,7 +24,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
 
                 if (request.SpeciesId.HasValue)
                 {
-                    query = query.Where(s => s.SpeciesId == request.SpeciesId);
+                    query = query.Where(s => s.Id == request.SpeciesId);
                 }
 
                 if (!string.IsNullOrWhiteSpace(request.Name))
@@ -35,7 +35,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 var speciesList = await query
                     .Select(s => new SpeciesDto
                     {
-                        SpeciesId = s.SpeciesId,
+                        Id = s.Id,
                         Name = s.Name,
                         Description = s.Description,
                         CreatedAt = s.CreatedAt

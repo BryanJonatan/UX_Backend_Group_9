@@ -7,7 +7,7 @@ namespace PetPals_BackEnd_Group_9.Models
     public class ForumCategory
     {
         [Column("forum_category_id")]
-        public int ForumCategoryId { get; set; }
+        public int Id { get; set; }
         [Column("category_name")]
         public string? CategoryName { get; set; }
     }

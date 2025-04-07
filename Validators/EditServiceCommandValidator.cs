@@ -3,9 +3,9 @@ using PetPals_BackEnd_Group_9.Command;
 
 namespace PetPals_BackEnd_Group_9.Validators
 {
-    public class AddServiceCommandValidator : AbstractValidator<AddServiceCommand>
+    public class EditServiceCommandValidator : AbstractValidator<EditServiceCommand>
     {
-        public AddServiceCommandValidator()
+        public EditServiceCommandValidator() 
         {
             // Name
             RuleFor(x => x.Name)
@@ -19,7 +19,7 @@ namespace PetPals_BackEnd_Group_9.Validators
             RuleFor(x => x.Price)
                 .NotEmpty().WithMessage("Price is required.")
                 .GreaterThan(0).WithMessage("Price must be greater than zero.");
-            
+
             // Address
             RuleFor(x => x.Address).NotEmpty()
                 .WithMessage("Address is required.");
@@ -27,10 +27,6 @@ namespace PetPals_BackEnd_Group_9.Validators
             // City
             RuleFor(x => x.City).NotEmpty()
                 .WithMessage("City is required.");
-
-            // Provider ID
-            RuleFor(x => x.ProviderId)
-                .GreaterThan(0).WithMessage("Invalid provider ID.");
         }
     }
 }

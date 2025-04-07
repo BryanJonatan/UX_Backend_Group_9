@@ -1,6 +1,9 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetPals_BackEnd_Group_9.Command;
+using PetPals_BackEnd_Group_9.Helpers;
+using PetPals_BackEnd_Group_9.Validators;
 using Serilog;
 
 namespace PetPals_BackEnd_Group_9.Handlers
@@ -16,6 +19,8 @@ namespace PetPals_BackEnd_Group_9.Handlers
 
         public async Task<Service> Handle(AddServiceCommand request, CancellationToken cancellationToken)
         {
+            Log.Information("Adding new service: Name = {Name}, CategoryId = {CategoryId}", request.Name, request.CategoryId);
+
             var providerExists = await _context.Users.AnyAsync(u => u.UserId == request.ProviderId, cancellationToken);
             if (!providerExists)
             {
@@ -23,12 +28,14 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 throw new NotFoundException("Provider not found");
             }
 
-            var categoryExists = await _context.ServiceCategories.AnyAsync(c => c.CategoryId == request.CategoryId, cancellationToken);
+            var categoryExists = await _context.ServiceCategories.AnyAsync(c => c.Id == request.CategoryId, cancellationToken);
             if (!categoryExists)
             {
                 Log.Error("Category with ID {CategoryId} not found", request.CategoryId);
                 throw new NotFoundException("Category not found");
             }
+
+            var provider = await _context.Users.FirstOrDefaultAsync(u => u.UserId == request.ProviderId, cancellationToken);
 
             var service = new Service
             {
@@ -40,18 +47,20 @@ namespace PetPals_BackEnd_Group_9.Handlers
                 Address = request.Address,
                 City = request.City,
                 Status = "available",
-                CreatedBy = request.CreatedBy,
+                IsRemoved = false,
+                CreatedBy = provider?.Name,
                 CreatedAt = DateTimeOffset.UtcNow,
-                UpdatedBy = request.CreatedBy,
+                UpdatedBy = provider?.Name,
                 UpdatedAt = DateTimeOffset.UtcNow,
-                Slug = request.Name.ToLower().Replace(" ", "-")
+                Slug = await SlugHelper.GenerateUniqueSlugAsync(request.Name, _context.Services),
             };
 
-            _context.Services.Add(service);
+            await _context.Services.AddAsync(service, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            Log.Information("Service {ServiceName} added successfully by {CreatedBy}", service.Name, request.CreatedBy);
+            Log.Information("Service {ServiceName} added successfully by {ProviderName}", service.Name, provider?.Name);
             return service;
         }
     }
 }
+

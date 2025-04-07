@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace PetPals_BackEnd_Group_9.Models
 {
     [Table("pets")]
-    public record Pet
+    public record Pet : ISluggable
     {
         [Key]
         [Column("pet_id")]

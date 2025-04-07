@@ -54,7 +54,7 @@ namespace PetPals_BackEnd_Group_9.Handlers
                     Price = s.Price,
                     Address = s.Address ?? "No address",
                     City = s.City ?? "No city",
-                    Status = s.Status,
+                  //  Status = s.Status,
                     Provider = s.Provider,
                     Category = s.Category,
                 })

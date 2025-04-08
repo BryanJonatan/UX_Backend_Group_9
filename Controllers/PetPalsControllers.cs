@@ -161,16 +161,11 @@ namespace PetPals_BackEnd_Group_9.Controllers
         public async Task<IActionResult> Login([FromBody] LoginCommand request)
         {
             var validator = new LoginValidator();
-            var validationResult = validator.Validate(request);
+            var validationResult = await validator.ValidateAsync(request);
+
             if (!validationResult.IsValid)
             {
-                return BadRequest(new ProblemDetails
-                {
-                    Type = "https://tools.ietf.org/html/rfc7807",
-                    Title = "Login Error",
-                    Status = 400,
-                    Detail = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage))
-                });
+                return BadRequest(new { errors = validationResult.Errors });
             }
 
             try
@@ -186,7 +181,7 @@ namespace PetPals_BackEnd_Group_9.Controllers
                     Type = "https://tools.ietf.org/html/rfc7807",
                     Title = "Authentication Error",
                     Status = 401,
-                    Detail = "Email atau password salah."
+                    Detail = "Incorrect email or password."
                 });
             }
             catch (Exception ex)

@@ -13,6 +13,7 @@ using PetPals_BackEnd_Group_9.Models;
 using PetPals_BackEnd_Group_9.Validators;
 using PetPals_BackEnd_Group_9.Command;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -57,7 +58,10 @@ builder.Services.AddScoped<IForumPostRepository, ForumPostRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IForumCategoryRepository, ForumCategoryRepository>();
 
-
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 
 var app = builder.Build();
 

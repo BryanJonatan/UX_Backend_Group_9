@@ -31,7 +31,6 @@ public class EditPetsHandler : IRequestHandler<EditPetsCommand, EditPetsResult>
         }
 
         pet.Name = request.Name;
-        pet.Breed = request.Breed;
         pet.Age = request.Age;
         pet.Description = request.Description;
         pet.Price = request.Price;

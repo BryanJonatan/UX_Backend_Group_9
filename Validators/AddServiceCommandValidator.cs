@@ -26,7 +26,8 @@ namespace PetPals_BackEnd_Group_9.Validators
 
             // City
             RuleFor(x => x.City).NotEmpty()
-                .WithMessage("City is required.");
+                .WithMessage("City is required.")
+                .Matches(@"^[\p{L}\s]+$").WithMessage("City can only contain letters and spaces.");
 
             // Provider ID
             RuleFor(x => x.ProviderId)

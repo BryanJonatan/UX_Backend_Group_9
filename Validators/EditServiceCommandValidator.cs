@@ -21,12 +21,13 @@ namespace PetPals_BackEnd_Group_9.Validators
                 .GreaterThan(0).WithMessage("Price must be greater than zero.");
 
             // Address
-            RuleFor(x => x.Address).NotEmpty()
-                .WithMessage("Address is required.");
+            RuleFor(x => x.Address)
+                .NotEmpty().WithMessage("Address is required.");
 
             // City
-            RuleFor(x => x.City).NotEmpty()
-                .WithMessage("City is required.");
+            RuleFor(x => x.City)
+                .NotEmpty().WithMessage("City is required.")
+                .Matches(@"^[\p{L}\s]+$").WithMessage("City can only contain letters and spaces.");
         }
     }
 }

@@ -7,17 +7,24 @@ namespace PetPals_BackEnd_Group_9.Validators
     {
         public GetServiceListQueryValidator()
         {
-            RuleFor(x => x.MinPrice)
-                .GreaterThanOrEqualTo(0).WithMessage("MinPrice must be at least 0.")
-                .When(x => x.MinPrice.HasValue);
+            // Price
+            RuleFor(q => q.MinPrice)
+                .Must(x => !x.HasValue || x.Value >= 0)
+                .WithMessage("MinPrice must be greater than or equal to 0.");
 
-            RuleFor(x => x.MaxPrice)
-                .GreaterThanOrEqualTo(0).WithMessage("MaxPrice must be at least 0.")
-                .When(x => x.MaxPrice.HasValue);
+            RuleFor(q => q.MaxPrice)
+                .Must(x => !x.HasValue || x.Value >= 0)
+                .WithMessage("MaxPrice must be greater than or equal to 0.");
 
-            RuleFor(x => x)
-                .Must(x => !x.MinPrice.HasValue || !x.MaxPrice.HasValue || x.MinPrice <= x.MaxPrice)
-                .WithMessage("MinPrice cannot be greater than MaxPrice.");
+            RuleFor(q => q.MinPrice)
+                .Custom((minPrice, context) =>
+                {
+                    var instance = context.InstanceToValidate;
+                    if (minPrice.HasValue && instance.MaxPrice.HasValue && minPrice > instance.MaxPrice)
+                    {
+                        context.AddFailure("MinPrice", "MinPrice must be less than or equal to MaxPrice.");
+                    }
+                });
         }
     }
 }

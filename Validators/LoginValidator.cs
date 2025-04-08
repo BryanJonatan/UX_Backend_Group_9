@@ -8,11 +8,14 @@ namespace PetPals_BackEnd_Group_9.Validators
         public LoginValidator()
         {
             RuleFor(x => x.Email)
-                .NotEmpty().WithMessage("Email tidak boleh kosong.")
-                .EmailAddress().WithMessage("Format email tidak valid.");
+                .NotEmpty().WithMessage("Email is required.")
+                .EmailAddress().WithMessage("Email format is not valid.")
+                .MaximumLength(100).WithMessage("Email can't be more than 100 characters");
 
             RuleFor(x => x.Password)
-                .NotEmpty().WithMessage("Password tidak boleh kosong.");
+                .NotEmpty().WithMessage("Password is required.")
+                .MinimumLength(8).WithMessage("Password must contain at least 8 characters.")
+                .MaximumLength(255).WithMessage("Password can't be more than 255 characters.");
         }
     }
 }

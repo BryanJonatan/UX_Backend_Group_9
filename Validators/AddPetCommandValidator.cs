@@ -10,12 +10,13 @@ namespace PetPals_BackEnd_Group_9.Validators
             // Name
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("Name is required.")
-                .Matches(@"^[\p{L} ]+$").WithMessage("Name can only contain letters and spaces."); // bisa mengandung aksen (misal: "José", "Chloë")
+                .Matches(@"^[\p{L}\s]+$").WithMessage("Name can only contain letters and spaces."); // bisa mengandung aksen (misal: "José", "Chloë")
 
             // Breed
             RuleFor(p => p.Breed)
-                .NotEmpty().WithMessage("Breed is required.");
-            
+                .NotEmpty().WithMessage("Breed is required.")
+                .Matches(@"^[\p{L}\s]+$").WithMessage("Breed can only contain letters and spaces.");
+
             // Species
             RuleFor(p => p.SpeciesId)
                 .GreaterThan(0).WithMessage("Species is required.");

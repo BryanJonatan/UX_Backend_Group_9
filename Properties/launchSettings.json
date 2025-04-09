@@ -8,6 +8,11 @@
           "ASPNETCORE_ENVIRONMENT": "Development"
         },
         //"applicationUrl": "https://localhost:7249;http://localhost:5099"
+        //"applicationUrl": "http://192.168.100.8:7249;http://192.168.100.8:5249", // Punya Jessen
+        // Nanti kalau mau test:
+        // 1. Jalanin perintah 'ipconfig' di terminal
+        // 2. Lihat Wireless LAN adapter Wi-Fi -> IPv4 Address (cth: 192.168.100.8)
+        // 3. Ubah applicationUrl jadi "http://IPv4Address:7249;http://IPv4Address:5249"
         "applicationUrl": "http://192.168.100.8:7249;http://192.168.100.8:5249"
       }
     }

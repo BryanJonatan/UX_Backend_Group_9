@@ -1,13 +1,14 @@
 ﻿{
     "profiles": {
-        "PetPals_BackEnd_Group_9": {
-            "commandName": "Project",
-            "launchBrowser": true,
-            "launchUrl": "swagger",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            },
-            "applicationUrl": "https://localhost:7249;http://localhost:5099"
-        }
+      "PetPals_BackEnd_Group_9": {
+        "commandName": "Project",
+        "launchBrowser": true,
+        "launchUrl": "swagger",
+        "environmentVariables": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
+        },
+        //"applicationUrl": "https://localhost:7249;http://localhost:5099"
+        "applicationUrl": "http://192.168.100.8:7249;http://192.168.100.8:5249"
+      }
     }
 }

@@ -30,6 +30,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new() { Title = "PetPals API", Version = "v1" });
+
+    // Tambahkan server IP kamu di Swagger UI
+    c.AddServer(new Microsoft.OpenApi.Models.OpenApiServer
+    {
+        Url = "http://192.168.100.8:5249"
+    });
+});
+
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<PetPalsDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -62,6 +74,13 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
 });
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5249); // HTTP
+    // options.ListenAnyIP(7249, listenOptions => { listenOptions.UseHttps(); }); // kalau kamu mau HTTPS
+});
+
 
 var app = builder.Build();
 
